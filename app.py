@@ -32,6 +32,7 @@ def main():
         if submitted:
             all_bundles=list()
             lp_df = pd.DataFrame()
+            st.write(f"Finding optimal bundles...")
             for t in range(5,26,5):
                 n = get_user(user)
                 # Assume they are our target patient
@@ -45,7 +46,6 @@ def main():
                                            age = age_choice, after_surgery = after_surgery_choice, activity_level = activity_level_choice,
                                            pre_diabetes = pre_diabetes_choice, high_cholesterol = high_cholesterol_choice,
                                            hypertension = hypertension_choice)
-                st.write(f"Finding optimal bundles...Round{t/5}")
                 all_bundles += bundles
             lp_lst = []
             for i, d in enumerate(all_bundles):
