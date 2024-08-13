@@ -32,7 +32,7 @@ class CustomCBCSolver(pulp.LpSolver):
         # except Exception as e:
         #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        st.write(result.stdout)
+        #st.write(result.stdout)
 
         # # Print output for debugging
         # st.write("CBC Solver Output:", stdout_decoded)
@@ -40,6 +40,24 @@ class CustomCBCSolver(pulp.LpSolver):
 
         # # Optional: Clean up temporary file
         # os.remove("temp_problem.lp")
+
+        # Parse the solver output to extract variable values
+        for line in result.stdout.splitlines():
+            if line.startswith("Result - Optimal solution found"):
+                # Found the optimal solution
+                continue
+            elif line.startswith("ItemChoice"):
+                # Example line: "ItemChoice_('breakfast',_'Almost_Fried_Plantains___Virtually_Fat_Free') = 1"
+                parts = line.split('=')
+                if len(parts) == 2:
+                    var_name = parts[0].strip()
+                    value = float(parts[1].strip())
+
+                    # Find the corresponding PuLP variable
+                    for v in lp.variables():
+                        if v.name == var_name:
+                            v.varValue = value
+                            break
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
