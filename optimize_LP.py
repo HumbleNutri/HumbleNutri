@@ -29,8 +29,8 @@ class CustomCBCSolver(pulp.LpSolver):
             raise RuntimeError(f"Error decoding CBC output: {e}")
 
         # Print output for debugging
-        print("CBC Solver Output:", stdout_decoded)
-        print("CBC Solver Error Output:", stderr_decoded)
+        st.write("CBC Solver Output:", stdout_decoded)
+        st.write("CBC Solver Error Output:", stderr_decoded)
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
