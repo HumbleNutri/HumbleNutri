@@ -23,24 +23,18 @@ class CustomCBCSolver(pulp.LpSolver):
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
 
-        # Decode the output safely
-        try:
-            stdout_decoded = result.stdout.decode('utf-8', errors='replace')
-            stderr_decoded = result.stderr.decode('utf-8', errors='replace')
-        except Exception as e:
-            raise RuntimeError(f"Error decoding CBC output: {e}")
+        # # Decode the output safely
+        # try:
+        #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+        #     stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        # except Exception as e:
+        #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        # Print output for debugging
-        st.write("CBC Solver Output:", stdout_decoded)
-        st.write("CBC Solver Error Output:", stderr_decoded)
-
-         # Parse the results manually or ensure the LP file is read back correctly
-        try:
-            # If the solver generates a solution file, you can read it
-            lp.readLP("temp_problem.lp")
-        except Exception as e:
-            st.write(f"Error reading the LP file: {e}")
-            raise
+        st.write(result.stdout)
+        
+        # # Print output for debugging
+        # st.write("CBC Solver Output:", stdout_decoded)
+        # st.write("CBC Solver Error Output:", stderr_decoded)
 
         # # Optional: Clean up temporary file
         # os.remove("temp_problem.lp")
