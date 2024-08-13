@@ -1,6 +1,5 @@
 import random
 import pulp
-import streamlit as st
 from constraints import IBW_constraints
 from utils import torf
 
@@ -11,7 +10,6 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     calorie_needs, protein_needs_lower, protein_needs_upper,sugar_needs, carb_needs, satfat_needs, sodium_needs, fiber_needs = IBW_constraints(gender, height, weight, age,
                                                                                                                                                torf(after_surgery), activity_level, torf(pre_diabetes),
                                                                                                                                                torf(high_cholesterol), torf(hypertension))
-    st.write(calorie_needs, protein_needs_lower, protein_needs_upper,sugar_needs, carb_needs, satfat_needs, sodium_needs, fiber_needs)
     # Define the problem
     prob = pulp.LpProblem("Bundle_Generation", pulp.LpMaximize)
 
