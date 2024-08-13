@@ -3,7 +3,9 @@ import pulp
 from constraints import IBW_constraints
 from utils import torf
 import streamlit as st
+import os
 import subprocess
+
 
 
 class CustomCBCSolver(pulp.LpSolver):
@@ -21,16 +23,19 @@ class CustomCBCSolver(pulp.LpSolver):
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
 
-        # # Decode the output safely
-        # try:
-        #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
-        #     stderr_decoded = result.stderr.decode('utf-8', errors='replace')
-        # except Exception as e:
-        #     raise RuntimeError(f"Error decoding CBC output: {e}")
+        # Decode the output safely
+        try:
+            stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+            stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        except Exception as e:
+            raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        # # Print output for debugging
-        # st.write("CBC Solver Output:", stdout_decoded)
-        # st.write("CBC Solver Error Output:", stderr_decoded)
+        # Print output for debugging
+        st.write("CBC Solver Output:", stdout_decoded)
+        st.write("CBC Solver Error Output:", stderr_decoded)
+
+        # Optional: Clean up temporary file
+        os.remove("temp_problem.lp")
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
