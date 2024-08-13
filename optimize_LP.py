@@ -1,14 +1,12 @@
 import random
 import pulp
-import streamlit as st
 from constraints import IBW_constraints
 from utils import torf
-import sys
+import unittest
 
-with open('test_output.txt', 'w') as f:
-    sys.stdout = f  # Redirect stdout to a file
-    pulp.pulpTestAll()
-sys.stdout = sys.__stdout__
+test_suite = pulp.tests.run_tests.makeSuite()
+runner = unittest.TextTestRunner()
+runner.run(test_suite)
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
     # set seed
