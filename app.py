@@ -38,9 +38,6 @@ def main():
                 with open(f'./final_target_items/app_items_{n}_wg_t{t}.pkl', 'rb') as x: wg = pickle.load(x)
                 with open(f'./final_target_items/app_items_{n}_vegie_t{t}.pkl', 'rb') as x: vg = pickle.load(x)
                 with open(f'./final_target_items/main_items_{n}_filtered_t{t}.pkl', 'rb') as x: main = pickle.load(x)
-                st.write(bf)
-                st.write(wg)
-                st.write(vg)
                 # Call the optimization function
                 bundles, _ = LP_MealBundle(bf_items=bf, wg_items=wg, vg_items=vg, main_items=main,
                                            gender=gender_choice, height = height_choice, weight = weight_choice,
