@@ -32,7 +32,7 @@ class CustomCBCSolver(pulp.LpSolver):
         # except Exception as e:
         #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        # st.write(result.stdout)
+        st.write(result.stdout)
 
         # # Print output for debugging
         # st.write("CBC Solver Output:", stdout_decoded)
@@ -210,8 +210,11 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
         solver = CustomCBCSolver() #pulp.PULP_CBC_CMD(msg=True)
-        status = prob.solve(solver)
+        status=prob.solve(solver)
         if status == pulp.LpStatusOptimal:
+            for v in prob.variables():
+                st.write(f"{v.name} = {v.varValue}")
+        if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
             bundle = {
                 'breakfast': None,

@@ -33,7 +33,7 @@ def main():
             all_bundles=list()
             lp_df = pd.DataFrame()
             st.write(f"Finding optimal bundles...")
-            for t in range(5,11,5):
+            for t in range(5,26,5):
                 n = get_user(user)
                 # Assume they are our target patient
                 with open(f'./final_target_items/bf_items_{n}_filtered_t{t}.pkl', 'rb') as x: bf = pickle.load(x)
@@ -48,7 +48,6 @@ def main():
                                            hypertension = hypertension_choice)
                 all_bundles += bundles
             lp_lst = []
-            st.write(all_bundles)
             for i, d in enumerate(all_bundles):
                 for key, value in d.items():
                     if key != 'objective_value':
