@@ -1,5 +1,6 @@
 import random
 import pulp
+import time
 from constraints import IBW_constraints
 from utils import torf
 
@@ -200,9 +201,17 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                 # Add constraints to exclude selected vegie-dish items from being used as lunch-side or dinner-side-vg in future bundles
                 for item_id in selected_items['lunch-side'] | selected_items['dinner-side-vg']:
                     prob += item_choices['lunch-side', item_id] + item_choices['dinner-side-vg', item_id] == 0
+
+                # Delay to prevent overwhelming the solver
+                time.sleep(0.1)
             else:
                 break
         except pulp.PulpSolverError as e:
             print(f"Solver failed: {e}")
+        except BrokenPipeError as e:
+            print(f"Broken pipe error: {e}")
+            # Handle the error (e.g., retry, skip, or abort)
+            break
+
 
     return bundles, selected_items
