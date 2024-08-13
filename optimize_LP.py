@@ -186,14 +186,14 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     # Constraint to prevent selecting the same item for lunch and dinner
     for lunch_item in main_items:
         for dinner_item in main_items:
-            if sanitize_variable_name(lunch_item[0]) == sanitize_variable_name(dinner_item[0]):
-                prob += item_choices['lunch', sanitize_variable_name(lunch_item[0])] + item_choices['dinner-main', sanitize_variable_name(dinner_item[0])] <= 1
+            if lunch_item[0] == dinner_item[0]:
+                prob += item_choices['lunch', lunch_item[0]] + item_choices['dinner-main', dinner_item[0]] <= 1
                 
     # Constraint to prevent selecting the same item for lunch-side and dinner-side
     for lunch_side_item in vg_items:
         for dinner_side_item in vg_items:
-            if sanitize_variable_name(lunch_side_item[0]) == sanitize_variable_name(dinner_side_item[0]):
-                prob += item_choices['lunch-side', sanitize_variable_name(lunch_side_item[0])] + item_choices['dinner-side-vg',sanitize_variable_name(dinner_side_item[0])] <= 1
+            if lunch_side_item[0] == dinner_side_item[0]:
+                prob += item_choices['lunch-side', lunch_side_item[0]] + item_choices['dinner-side-vg', dinner_side_item[0]] <= 1
 
     # List to store bundles
     bundles = []
