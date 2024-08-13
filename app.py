@@ -39,12 +39,13 @@ def main():
                 with open(f'./final_target_items/app_items_{n}_vegie_t{t}.pkl', 'rb') as x: vg = pickle.load(x)
                 with open(f'./final_target_items/main_items_{n}_filtered_t{t}.pkl', 'rb') as x: main = pickle.load(x)
                 # Call the optimization function
-                bundles, _ = LP_MealBundle(bf_items=bf, wg_items=wg, vg_items=vg, main_items=main,
+                bundles, _ = LP_MealBundle(bf_items = bf, wg_items = wg, vg_items = vg, main_items = main,
                                            gender=gender_choice, height = height_choice, weight = weight_choice,
                                            age = age_choice, after_surgery = after_surgery_choice, activity_level = activity_level_choice,
                                            pre_diabetes = pre_diabetes_choice, high_cholesterol = high_cholesterol_choice,
                                            hypertension = hypertension_choice)
                 all_bundles += bundles
+                st.write("First Loop done")
             lp_lst = []
             for i, d in enumerate(all_bundles):
                 for key, value in d.items():
