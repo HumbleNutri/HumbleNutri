@@ -39,7 +39,7 @@ class CustomCBCSolver(pulp.LpSolver):
             # If the solver generates a solution file, you can read it
             lp.readLP("temp_problem.lp")
         except Exception as e:
-            print(f"Error reading the LP file: {e}")
+            st.write(f"Error reading the LP file: {e}")
             raise
 
         # # Optional: Clean up temporary file
