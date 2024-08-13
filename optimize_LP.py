@@ -164,54 +164,47 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 10:
-        try:
-            prob.solve() 
-            if prob.status == pulp.LpStatusOptimal:
-                # Create a bundle from the optimal solution
-                bundle = {
-                    'breakfast': None,
-                    'lunch-side': None,
-                    'lunch': None,
-                    'dinner-side-wg': None,
-                    'dinner-side-vg': None,
-                    'dinner-main': None,
-                    'objective_value': pulp.value(prob.objective)
-                }
-                for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']:
-                    for item in (bf_items if meal_type == 'breakfast' else
-                                vg_items if meal_type == 'lunch-side' else
-                                main_items if meal_type == 'lunch' else
-                                wg_items if meal_type == 'dinner-side-wg' else
-                                vg_items if meal_type == 'dinner-side-vg' else
-                                main_items):
-                        if pulp.value(item_choices[meal_type, item[0]]) == 1:
-                            bundle[meal_type] = item
-                bundles.append(bundle)
+        prob.solve()
+        if prob.status == pulp.LpStatusOptimal:
+            # Create a bundle from the optimal solution
+            bundle = {
+                'breakfast': None,
+                'lunch-side': None,
+                'lunch': None,
+                'dinner-side-wg': None,
+                'dinner-side-vg': None,
+                'dinner-main': None,
+                'objective_value': pulp.value(prob.objective)
+            }
+            for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']:
+                for item in (bf_items if meal_type == 'breakfast' else
+                             vg_items if meal_type == 'lunch-side' else
+                              main_items if meal_type == 'lunch' else
+                              wg_items if meal_type == 'dinner-side-wg' else
+                              vg_items if meal_type == 'dinner-side-vg' else
+                             main_items):
+                    if pulp.value(item_choices[meal_type, item[0]]) == 1:
+                        bundle[meal_type] = item
+            bundles.append(bundle)
 
-                # Add constraints to exclude the selected items from future bundles
-                for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']:
-                    if bundle[meal_type] is not None:
-                        selected_items[meal_type].add(bundle[meal_type][0])
-                        prob += item_choices[meal_type, bundle[meal_type][0]] == 0
-        
-                # Add constraints to exclude selected main-dish items from being used as lunch or dinner-main in future bundles
-                for item_id in selected_items['lunch'] | selected_items['dinner-main']:
-                    prob += item_choices['lunch', item_id] + item_choices['dinner-main', item_id] == 0
-                    
-                # Add constraints to exclude selected vegie-dish items from being used as lunch-side or dinner-side-vg in future bundles
-                for item_id in selected_items['lunch-side'] | selected_items['dinner-side-vg']:
-                    prob += item_choices['lunch-side', item_id] + item_choices['dinner-side-vg', item_id] == 0
+            # Add constraints to exclude the selected items from future bundles
+            for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']:
+                if bundle[meal_type] is not None:
+                    selected_items[meal_type].add(bundle[meal_type][0])
+                    prob += item_choices[meal_type, bundle[meal_type][0]] == 0
+    
+            # Add constraints to exclude selected main-dish items from being used as lunch or dinner-main in future bundles
+            for item_id in selected_items['lunch'] | selected_items['dinner-main']:
+                prob += item_choices['lunch', item_id] + item_choices['dinner-main', item_id] == 0
+                
+            # Add constraints to exclude selected vegie-dish items from being used as lunch-side or dinner-side-vg in future bundles
+            for item_id in selected_items['lunch-side'] | selected_items['dinner-side-vg']:
+                prob += item_choices['lunch-side', item_id] + item_choices['dinner-side-vg', item_id] == 0
+            
+            # Delay to prevent overwhelming the solver
+            time.sleep(0.1)
 
-                # Delay to prevent overwhelming the solver
-                time.sleep(0.1)
-            else:
-                break
-        except pulp.PulpSolverError as e:
-            print(f"Solver failed: {e}")
-        except BrokenPipeError as e:
-            print(f"Broken pipe error: {e}")
-            # Handle the error (e.g., retry, skip, or abort)
+        else:
             break
-
 
     return bundles, selected_items
