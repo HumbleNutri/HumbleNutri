@@ -164,10 +164,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        try:
-            prob.solve()
-        except pulp.PulpSolverError as e:
-            st.write(e)
+        prob.solve(pulp.COIN_CMD(msg=True))
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
             bundle = {
