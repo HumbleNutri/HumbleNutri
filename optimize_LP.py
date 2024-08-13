@@ -13,19 +13,6 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     # Check if the solver was found
     if not solver_path:
         raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
-    # Simple test problem
-    prob = pulp.LpProblem("TestProblem", pulp.LpMinimize)
-    x = pulp.LpVariable('x', lowBound=0)
-    prob += x >= 1, "Constraint"
-    prob += x, "Objective"
-
-    # Solve the simple problem
-    solver = pulp.COIN_CMD(path=solver_path, msg=True)
-    prob.solve(solver)
-
-    st.write("Status:", pulp.LpStatus[prob.status])
-    st.write("x =", x.varValue)
-    
     # set seed
     random.seed(2024)
     # Get constraints
@@ -185,11 +172,8 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = pulp.COIN_CMD(path=solver_path, msg=True)
-        try:
-            prob.solve(solver)
-        except pulp.apis.core.PulpSolverError as e:
-            st.write(e)
+        solver = pulp.COIN_CMD(msg=True)
+        prob.solve(solver)
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
             bundle = {
