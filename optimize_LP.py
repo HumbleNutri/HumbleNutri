@@ -10,13 +10,27 @@ import subprocess
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
     # Find the solver path using a shell command
     solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
-    result = subprocess.run([solver_path], capture_output=True, text=True)
-    st.write("Return code:", result.returncode)
-    st.write("Output:", result.stdout)
-    st.write("Error:", result.stderr)
-    # Check if the solver was found
-    if not solver_path:
-        raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
+    # Define a simple problem
+    prob = pulp.LpProblem("SimpleProblem", pulp.LpMinimize)
+    x = pulp.LpVariable('x', lowBound=0)
+    prob += x >= 5, "Constraint"
+    prob += x, "Objective"
+
+    # Write problem to LP file
+    prob.writeLP("simple_problem.lp")
+
+    # Run CBC solver manually
+    result = subprocess.run(['/usr/bin/cbc', 'simple_problem.lp', 'solve'], capture_output=True, text=True)
+    st.write("CBC Solver Output:", result.stdout)
+    st.write("CBC Solver Error Output:", result.stderr)
+
+    # Check if CBC executed correctly
+    if result.returncode != 0:
+        st.write("Error: CBC failed to execute correctly.")
+    else:
+        st.write("CBC executed successfully.")
+        if not solver_path:
+            raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
     # set seed
     random.seed(2024)
     # Get constraints
