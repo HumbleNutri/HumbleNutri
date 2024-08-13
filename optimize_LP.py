@@ -2,11 +2,7 @@ import random
 import pulp
 from constraints import IBW_constraints
 from utils import torf
-import unittest
 
-test_suite = pulp.tests.run_tests.makeSuite()
-runner = unittest.TextTestRunner()
-runner.run(test_suite)
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
     # set seed
