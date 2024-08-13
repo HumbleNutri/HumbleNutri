@@ -212,6 +212,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
         solver = CustomCBCSolver() #pulp.PULP_CBC_CMD(msg=True)
         status=prob.solve(solver)
         if status == pulp.LpStatusOptimal:
+            st.write("Objective Value:", pulp.value(prob.objective))
             for v in prob.variables():
                 st.write(f"{v.name} = {v.varValue}")
         if prob.status == pulp.LpStatusOptimal:
