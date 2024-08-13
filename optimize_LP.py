@@ -172,7 +172,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = pulp.PULP_CBC_CMD(path='/usr/bin/cbc', msg=True)
+        solver = pulp.COIN_CMD(path='/usr/bin/cbc', msg=True)
         try:
             prob.solve(solver)
         except pulp.apis.core.PulpSolverError as e:
