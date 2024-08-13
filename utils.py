@@ -10,7 +10,7 @@ def round_up_numbers_in_string(input_str):
     return rounded_str
 
 def torf(input_str):
-    if input_str == 'True':
+    if input_str == True:
         output_str = 'T'
     else:
         output_str = 'F'

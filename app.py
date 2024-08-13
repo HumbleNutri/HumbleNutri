@@ -43,7 +43,7 @@ def main():
                                            gender=gender_choice, height = height_choice, weight = weight_choice,
                                            age = age_choice, after_surgery = after_surgery_choice, activity_level = activity_level_choice,
                                            pre_diabetes = pre_diabetes_choice, high_cholesterol = high_cholesterol_choice,
-                                           hypertension = hypertension_choice, user=n)
+                                           hypertension = hypertension_choice)
                 all_bundles += bundles
             lp_lst = []
             for i, d in enumerate(all_bundles):
