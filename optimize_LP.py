@@ -12,7 +12,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
     result = subprocess.run([solver_path, '-v'], capture_output=True, text=True)
     st.write(result.stdout)
-    st.wrtie(result.stderr)
+    st.write(result.stderr)
     # Check if the solver was found
     if not solver_path:
         raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
