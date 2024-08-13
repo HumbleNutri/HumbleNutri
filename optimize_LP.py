@@ -172,9 +172,9 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = pulp.COIN_CMD(path='/usr/bin/cbc', msg=True)
+        solver = pulp.COIN_CMD(path=solver_path, msg=True)
         try:
-            prob.solve(solver, msg=True)
+            prob.solve(solver)
         except pulp.apis.core.PulpSolverError as e:
             st.write(e)
         if prob.status == pulp.LpStatusOptimal:
