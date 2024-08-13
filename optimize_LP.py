@@ -2,6 +2,15 @@ import random
 import pulp
 from constraints import IBW_constraints
 from utils import torf
+import subprocess
+
+
+# Find the solver path using a shell command
+solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
+
+# Check if the solver was found
+if not solver_path:
+    raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
 
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
