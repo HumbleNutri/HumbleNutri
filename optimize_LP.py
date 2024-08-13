@@ -229,7 +229,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               wg_items if meal_type == 'dinner-side-wg' else
                               vg_items if meal_type == 'dinner-side-vg' else
                              main_items):
-                    if pulp.value(item_choices[meal_type, item[0]]) == 1:
+                    if pulp.value(item_choices[meal_type, sanitize_variable_name(item[0])]) == 1:
                         bundle[meal_type] = item
             bundles.append(bundle)
 
