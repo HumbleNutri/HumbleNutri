@@ -32,7 +32,7 @@ class CustomCBCSolver(pulp.LpSolver):
         # except Exception as e:
         #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        st.write(result.stdout)
+        # st.write(result.stdout)
 
         # # Print output for debugging
         # st.write("CBC Solver Output:", stdout_decoded)
