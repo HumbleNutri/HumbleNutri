@@ -4,7 +4,6 @@ from constraints import IBW_constraints
 from utils import torf
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
-    pulp.pulpTestAll()
     solver_list = pulp.listSolvers(onlyAvailable=True)
     print(solver_list)
     # set seed
