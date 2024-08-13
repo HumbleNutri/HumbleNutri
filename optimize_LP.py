@@ -174,7 +174,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     while len(bundles)< 50:
         solver = pulp.COIN_CMD(path='/usr/bin/cbc', msg=True)
         try:
-            prob.solve(solver)
+            prob.solve(solver, msg=True)
         except pulp.apis.core.PulpSolverError as e:
             st.write(e)
         if prob.status == pulp.LpStatusOptimal:
