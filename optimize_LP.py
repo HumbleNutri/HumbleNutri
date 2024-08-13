@@ -34,8 +34,16 @@ class CustomCBCSolver(pulp.LpSolver):
         st.write("CBC Solver Output:", stdout_decoded)
         st.write("CBC Solver Error Output:", stderr_decoded)
 
-        # Optional: Clean up temporary file
-        os.remove("temp_problem.lp")
+         # Parse the results manually or ensure the LP file is read back correctly
+        try:
+            # If the solver generates a solution file, you can read it
+            lp.readLP("temp_problem.lp")
+        except Exception as e:
+            print(f"Error reading the LP file: {e}")
+            raise
+
+        # # Optional: Clean up temporary file
+        # os.remove("temp_problem.lp")
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
