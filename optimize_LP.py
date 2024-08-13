@@ -10,7 +10,6 @@ import subprocess
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
     # Find the solver path using a shell command
     solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
-    st.write(solver_path)
     # Check if the solver was found
     if not solver_path:
         raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
@@ -173,7 +172,8 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = pulp.PULP_CBC_CMD(solver_path)
+        solver = pulp.PULP_CBC_CMD(path=solver_path)
+        st.write(solver)
         prob.solve(solver)
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
