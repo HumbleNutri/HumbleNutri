@@ -165,7 +165,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     while len(bundles)< 50:
         try:
             prob.solve()
-        except:
+        except pulp.PulpSolverError as e:
             print(f"Solver error: {e}")
         # if prob.status == pulp.LpStatusOptimal:
         #     # Create a bundle from the optimal solution
