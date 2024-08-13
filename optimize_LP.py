@@ -18,7 +18,7 @@ class CustomCBCSolver(pulp.LpSolver):
         lp.writeLP("temp_problem.lp")
 
         # Run the CBC solver manually, without text=True to get bytes
-        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True, text=True)
         
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
@@ -31,7 +31,7 @@ class CustomCBCSolver(pulp.LpSolver):
         #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
         st.write(result.stdout)
-        
+
         # # Print output for debugging
         # st.write("CBC Solver Output:", stdout_decoded)
         # st.write("CBC Solver Error Output:", stderr_decoded)
