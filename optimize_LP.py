@@ -14,12 +14,25 @@ class CustomCBCSolver(pulp.LpSolver):
     def actualSolve(self, lp):
         # Write the problem to an LP file
         lp.writeLP("temp_problem.lp")
-        # Run the CBC solver manually
-        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True, text=True)
+
+        # Run the CBC solver manually, without text=True to get bytes
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
+        
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
-        # Optionally parse the result here or rely on LP file output
-        # lp.readLP("temp_problem.lp")
+
+        # Decode the output safely
+        try:
+            stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+            stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        except Exception as e:
+            raise RuntimeError(f"Error decoding CBC output: {e}")
+
+        # Print output for debugging
+        print("CBC Solver Output:", stdout_decoded)
+        print("CBC Solver Error Output:", stderr_decoded)
+
+        # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
 
 
