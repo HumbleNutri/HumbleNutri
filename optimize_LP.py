@@ -6,30 +6,28 @@ import streamlit as st
 import subprocess
 
 
+class CustomCBCSolver(pulp.LpSolver):
+    def __init__(self, solver_path="/usr/bin/cbc"):
+        super().__init__()
+        self.solver_path = solver_path
+
+    def actualSolve(self, lp):
+        # Write the problem to an LP file
+        lp.writeLP("temp_problem.lp")
+        # Run the CBC solver manually
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise pulp.PulpSolverError("Error running CBC solver")
+        # Optionally parse the result here or rely on LP file output
+        lp.readLP("temp_problem.lp")
+        return pulp.constants.LpStatusOptimal
+
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
-    # Find the solver path using a shell command
-    solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
-    # Define a simple problem
-    prob = pulp.LpProblem("SimpleProblem", pulp.LpMinimize)
-    x = pulp.LpVariable('x', lowBound=0)
-    prob += x >= 1, "Constraint"
-    prob += x, "Objective"
-    # Write problem to LP file
-    prob.writeLP("simple_problem.lp")
-
-    # Run CBC solver manually
-    result = subprocess.run([solver_path, 'simple_problem.lp', 'solve'], capture_output=True, text=True)
-    st.write("CBC Solver Output:", result.stdout)
-    st.write("CBC Solver Error Output:", result.stderr)
-
-    # Check if CBC executed correctly
-    if result.returncode != 0:
-        st.write("Error: CBC failed to execute correctly.")
-    else:
-        st.write("CBC executed successfully.")
-        if not solver_path:
-            raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
+    # # Find the solver path using a shell command
+    # solver_path = subprocess.run(['which', 'cbc'], capture_output=True, text=True).stdout.strip()
+    # if not solver_path:
+    #     raise FileNotFoundError("Solver not found. Please ensure it's installed and available in the PATH.")
     # set seed
     random.seed(2024)
     # Get constraints
@@ -189,7 +187,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = pulp.PULP_CBC_CMD(msg=True)
+        solver = CustomCBCSolver()#pulp.PULP_CBC_CMD(msg=True)
         prob.solve(solver)
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
