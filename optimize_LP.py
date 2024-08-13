@@ -13,14 +13,13 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     # Define a simple problem
     prob = pulp.LpProblem("SimpleProblem", pulp.LpMinimize)
     x = pulp.LpVariable('x', lowBound=0)
-    prob += x >= 5, "Constraint"
+    prob += x >= 1, "Constraint"
     prob += x, "Objective"
-
     # Write problem to LP file
     prob.writeLP("simple_problem.lp")
 
     # Run CBC solver manually
-    result = subprocess.run(['/usr/bin/cbc', 'simple_problem.lp', 'solve'], capture_output=True, text=True)
+    result = subprocess.run([solver_path, 'simple_problem.lp', 'solve'], capture_output=True, text=True)
     st.write("CBC Solver Output:", result.stdout)
     st.write("CBC Solver Error Output:", result.stderr)
 
