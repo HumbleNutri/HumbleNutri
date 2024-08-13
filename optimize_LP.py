@@ -19,7 +19,7 @@ class CustomCBCSolver(pulp.LpSolver):
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
         # Optionally parse the result here or rely on LP file output
-        lp.readLP("temp_problem.lp")
+        # lp.readLP("temp_problem.lp")
         return pulp.constants.LpStatusOptimal
 
 
