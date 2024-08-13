@@ -3,7 +3,7 @@ import pulp
 from constraints import IBW_constraints
 from utils import torf
 
-def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension, user):
+def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
     # set seed
     random.seed(2024)
     # Get constraints
@@ -148,9 +148,6 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
         for dinner_side_item in vg_items:
             if lunch_side_item[0] == dinner_side_item[0]:
                 prob += item_choices['lunch-side', lunch_side_item[0]] + item_choices['dinner-side-vg', dinner_side_item[0]] <= 1
-
-#     # Constraint to ensure lunch calorie does not exceed dinner-main calorie
-#     prob += sum([item_choices['lunch', item[0]] * item[11] for item in main_items]) <= sum([item_choices['dinner-main', item[0]] * item[11] for item in main_items])
 
     # List to store bundles
     bundles = []
