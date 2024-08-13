@@ -204,6 +204,5 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                 break
         except pulp.PulpSolverError as e:
             print(f"Solver failed: {e}")
-            continue
 
     return bundles, selected_items
