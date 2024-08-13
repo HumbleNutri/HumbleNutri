@@ -5,8 +5,6 @@ from constraints import IBW_constraints
 from utils import torf
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
-    solver_list = pulp.listSolvers(onlyAvailable=True)
-    st.write(solver_list)
     # set seed
     random.seed(2024)
     # Get constraints
@@ -166,7 +164,10 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        prob.solve()
+        try:
+            prob.solve()
+        except pulp.PulpSolverError as e:
+            st.write(e)
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
             bundle = {
