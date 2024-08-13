@@ -21,16 +21,16 @@ class CustomCBCSolver(pulp.LpSolver):
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
 
-        # Decode the output safely
-        try:
-            stdout_decoded = result.stdout.decode('utf-8', errors='replace')
-            stderr_decoded = result.stderr.decode('utf-8', errors='replace')
-        except Exception as e:
-            raise RuntimeError(f"Error decoding CBC output: {e}")
+        # # Decode the output safely
+        # try:
+        #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+        #     stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        # except Exception as e:
+        #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        # Print output for debugging
-        st.write("CBC Solver Output:", stdout_decoded)
-        st.write("CBC Solver Error Output:", stderr_decoded)
+        # # Print output for debugging
+        # st.write("CBC Solver Output:", stdout_decoded)
+        # st.write("CBC Solver Error Output:", stderr_decoded)
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
@@ -200,7 +200,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        solver = CustomCBCSolver()#pulp.PULP_CBC_CMD(msg=True)
+        solver = CustomCBCSolver() #pulp.PULP_CBC_CMD(msg=True)
         prob.solve(solver)
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
