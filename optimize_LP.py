@@ -4,6 +4,7 @@ from constraints import IBW_constraints
 from utils import torf
 import streamlit as st
 import re
+import os
 import subprocess
 
 def sanitize_variable_name(name):
