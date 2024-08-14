@@ -25,11 +25,21 @@ class CustomCBCSolver(pulp.LpSolver):
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
         
-        # Parse the solver output to extract the objective value
+        # Ensure the output is correctly processed
         objective_value = None
+
         for line in result.stdout.splitlines():
-            if "Objective value:" in line:
-                objective_value = float(line.split(":")[1].strip())
+            # Debugging: Ensure that each line is a string
+            if isinstance(line, str):
+                if "Objective value:" in line:
+                    # Extract the objective value from the line
+                    try:
+                        objective_value = float(line.split(":")[1].strip())
+                    except ValueError as e:
+                        print(f"Error parsing objective value from line: {line}")
+                        raise e
+            else:
+                print(f"Unexpected line type: {type(line)} - Content: {line}")
 
         # Set the objective value manually in the PuLP model
         if objective_value is not None:
@@ -38,8 +48,6 @@ class CustomCBCSolver(pulp.LpSolver):
             return pulp.constants.LpStatusNotSolved
 
         # Manually assign variable values if possible
-        # This part needs to be customized depending on how you capture or expect the values
-        # For example, assume all variables should be 1.0 as a placeholder logic
         for v in lp.variables():
             v.varValue = 1.0  # Replace with actual logic to assign correct values
         # # Decode the output safely
@@ -57,7 +65,7 @@ class CustomCBCSolver(pulp.LpSolver):
 
         # # Optional: Clean up temporary file
         # os.remove("temp_problem.lp")
-        
+
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
 
