@@ -28,18 +28,16 @@ class CustomCBCSolver(pulp.LpSolver):
         # Ensure the output is correctly processed
         objective_value = None
 
+        # Process each line as a string after decoding
         for line in result.stdout.splitlines():
-            # Debugging: Ensure that each line is a string
-            if isinstance(line, str):
-                if "Objective value:" in line:
-                    # Extract the objective value from the line
-                    try:
-                        objective_value = float(line.split(":")[1].strip())
-                    except ValueError as e:
-                        st.write(f"Error parsing objective value from line: {line}")
-                        raise e
-            else:
-                st.write(f"Unexpected line type: {type(line)} - Content: {line}")
+            line = line.decode('utf-8').strip()  # Decode bytes to string and strip any extra whitespace
+            if "Objective value:" in line:
+                # Extract the objective value from the line
+                try:
+                    objective_value = float(line.split(":")[1].strip())
+                except ValueError as e:
+                    st.write(f"Error parsing objective value from line: {line}")
+                    raise e
 
         # Set the objective value manually in the PuLP model
         if objective_value is not None:
@@ -49,7 +47,7 @@ class CustomCBCSolver(pulp.LpSolver):
 
         # Manually assign variable values if possible
         for v in lp.variables():
-            v.varValue = 1.0  # Replace with actual logic to assign correct values
+            v.varValue = 1.0   # Replace with actual logic to assign correct values
         # # Decode the output safely
         # try:
         #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
