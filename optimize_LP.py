@@ -19,35 +19,42 @@ class CustomCBCSolver(pulp.LpSolver):
         # Write the problem to an LP file
         lp.writeLP("temp_problem.lp")
 
-        # Run the CBC solver manually, without text=True to get bytes
-        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
-        
+        # Run the CBC solver manually, specifying an output file for the solution
+        solution_file = "temp_solution.sol"
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve', 'sol', solution_file], capture_output=True)
+
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
-        
-        # Ensure the output is correctly processed
-        objective_value = None
 
-        # Process each line as a string after decoding
-        for line in result.stdout.splitlines():
-            line = line.decode('utf-8').strip()  # Decode bytes to string and strip any extra whitespace
-            if "Objective value:" in line:
-                # Extract the objective value from the line
-                try:
-                    objective_value = float(line.split(":")[1].strip())
-                except ValueError as e:
-                    st.write(f"Error parsing objective value from line: {line}")
-                    raise e
+        # Initialize variables to store parsed results
+        variable_values = {}
 
-        # Set the objective value manually in the PuLP model
-        if objective_value is not None:
-            lp.objective.setInitialValue(objective_value)
-        else:
-            return pulp.constants.LpStatusNotSolved
+        # Read and parse the solution file to extract variable values
+        try:
+            with open(solution_file, "r") as sol_file:
+                for line in sol_file:
+                    # Example parsing logic: Adjust this based on the actual content of the solution file
+                    if line.startswith(" "):  # Variable lines often start with a space
+                        parts = line.split()
+                        if len(parts) == 2:
+                            var_name = parts[0].strip()
+                            var_value = float(parts[1].strip())
+                            variable_values[var_name] = var_value
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Solution file {solution_file} not found")
 
-        # Manually assign variable values if possible
+        # Update the variable values in the PuLP model
         for v in lp.variables():
-            v.varValue = 1.0   # Replace with actual logic to assign correct values
+            if v.name in variable_values:
+                v.varValue = variable_values[v.name]  # Update with actual parsed value
+            else:
+                v.varValue = 0.0 
+
+        # # Run the CBC solver manually, without text=True to get bytes
+        # result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
+        
+        # if result.returncode != 0:
+        #     raise pulp.PulpSolverError("Error running CBC solver")
         # # Decode the output safely
         # try:
         #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
