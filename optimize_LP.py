@@ -4,7 +4,6 @@ from constraints import IBW_constraints
 from utils import torf
 import streamlit as st
 import re
-import os
 import subprocess
 
 def sanitize_variable_name(name):
@@ -18,44 +17,28 @@ class CustomCBCSolver(pulp.LpSolver):
 
     def actualSolve(self, lp):
         # Write the problem to an LP file
-        lp_file = "temp_problem.lp"
-        solution_file = "temp_solution.sol"
-        lp.writeLP(lp_file)
+        lp.writeLP("temp_problem.lp")
 
-        # Remove any previous solution file
-        if os.path.exists(solution_file):
-            os.remove(solution_file)
-
-        # Run the CBC solver manually, specifying the output file for the solution
-        result = subprocess.run([self.solver_path, lp_file, 'solve', 'sol', solution_file], capture_output=True, text=True)
-
+        # Run the CBC solver manually, without text=True to get bytes
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
+        
         if result.returncode != 0:
             raise pulp.PulpSolverError("Error running CBC solver")
+        # # Decode the output safely
+        # try:
+        #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+        #     stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        # except Exception as e:
+        #     raise RuntimeError(f"Error decoding CBC output: {e}")
 
-        # Ensure the solution file was created
-        if not os.path.exists(solution_file):
-            raise FileNotFoundError(f"Solution file {solution_file} not found")
+        #st.write(result.stdout)
 
-        # Initialize variables to store parsed results
-        variable_values = {}
+        # # Print output for debugging
+        # st.write("CBC Solver Output:", stdout_decoded)
+        # st.write("CBC Solver Error Output:", stderr_decoded)
 
-        # Read and parse the solution file to extract variable values
-        with open(solution_file, "r") as sol_file:
-            for line in sol_file:
-                # Example parsing logic: Adjust this based on actual content of the solution file
-                if line.startswith(" "):  # Variable lines often start with a space
-                    parts = line.split()
-                    if len(parts) == 2:
-                        var_name = parts[0].strip()
-                        var_value = float(parts[1].strip())
-                        variable_values[var_name] = var_value
-
-        # Update the variable values in the PuLP model
-        for v in lp.variables():
-            if v.name in variable_values:
-                v.varValue = variable_values[v.name]  # Update with actual parsed value
-            else:
-                v.varValue = 0.0  # Handle this appropriately if some variables are not included
+        # # Optional: Clean up temporary file
+        # os.remove("temp_problem.lp")
 
         # Assuming further processing or manual parsing here
         return pulp.constants.LpStatusOptimal
