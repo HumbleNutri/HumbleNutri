@@ -36,10 +36,10 @@ class CustomCBCSolver(pulp.LpSolver):
                     try:
                         objective_value = float(line.split(":")[1].strip())
                     except ValueError as e:
-                        print(f"Error parsing objective value from line: {line}")
+                        st.write(f"Error parsing objective value from line: {line}")
                         raise e
             else:
-                print(f"Unexpected line type: {type(line)} - Content: {line}")
+                st.write(f"Unexpected line type: {type(line)} - Content: {line}")
 
         # Set the objective value manually in the PuLP model
         if objective_value is not None:
