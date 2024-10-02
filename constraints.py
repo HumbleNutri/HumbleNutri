@@ -69,12 +69,12 @@ def IBW_constraints(gender, height, weight, age, after_surgery, activity_level, 
     calorie_needs = RMR * eps
     
     # Protien needs
-    if after_surgery == 'T' or age >= 65:
+    if after_surgery or age >= 65:
         protein_needs_lower = ibw_in_kg * 1.2
         protein_needs_upper = ibw_in_kg * 1.5
     
     # Pre-diabetes
-    if pre_diabetes == 'T':
+    if pre_diabetes:
         sugar_needs = calorie_needs*0.05/4 # 5% of total calories
         carb_needs = calorie_needs*0.45/4 # 45% of total calories
     else:
@@ -82,13 +82,13 @@ def IBW_constraints(gender, height, weight, age, after_surgery, activity_level, 
         carb_needs = calorie_needs*0.6/4 # 60% of total calories
     
     # High cholesterol
-    if high_cholesterol == 'T':
+    if high_cholesterol:
         satfat_needs = calorie_needs*0.06/9 # 6% of total calories
     else:
         satfat_needs = calorie_needs*0.1/9 # 10% of total calories
     
     # Hypertension
-    if hypertension == 'T':
+    if hypertension:
         sodium_needs = 1500
     else:
         sodium_needs = 2300

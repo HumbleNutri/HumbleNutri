@@ -1,6 +1,47 @@
 import random
 import pulp
 from constraints import IBW_constraints
+from utils import torf
+import streamlit as st
+import re
+import subprocess
+
+def sanitize_variable_name(name):
+    # Replace or remove illegal characters
+    return re.sub(r"[^a-zA-Z0-9_]", "_", name)
+
+class CustomCBCSolver(pulp.LpSolver):
+    def __init__(self, solver_path="/usr/bin/cbc"):
+        super().__init__()
+        self.solver_path = solver_path
+
+    def actualSolve(self, lp):
+        # Write the problem to an LP file
+        lp.writeLP("temp_problem.lp")
+
+        # Run the CBC solver manually, without text=True to get bytes
+        result = subprocess.run([self.solver_path, 'temp_problem.lp', 'solve'], capture_output=True)
+        
+        if result.returncode != 0:
+            raise pulp.PulpSolverError("Error running CBC solver")
+        # # Decode the output safely
+        # try:
+        #     stdout_decoded = result.stdout.decode('utf-8', errors='replace')
+        #     stderr_decoded = result.stderr.decode('utf-8', errors='replace')
+        # except Exception as e:
+        #     raise RuntimeError(f"Error decoding CBC output: {e}")
+
+        #st.write(result.stdout)
+
+        # # Print output for debugging
+        # st.write("CBC Solver Output:", stdout_decoded)
+        # st.write("CBC Solver Error Output:", stderr_decoded)
+
+        # # Optional: Clean up temporary file
+        # os.remove("temp_problem.lp")
+
+        # Assuming further processing or manual parsing here
+        return pulp.constants.LpStatusOptimal
 
 
 def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weight, age, after_surgery, activity_level, pre_diabetes, high_cholesterol, hypertension):
@@ -12,13 +53,13 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     random.seed(2024)
     # Get constraints
     calorie_needs, protein_needs_lower, protein_needs_upper,sugar_needs, carb_needs, satfat_needs, sodium_needs, fiber_needs = IBW_constraints(gender, height, weight, age,
-                                                                                                                                               after_surgery, activity_level, pre_diabetes,
-                                                                                                                                               high_cholesterol, hypertension)
+                                                                                                                                               torf(after_surgery), activity_level, torf(pre_diabetes),
+                                                                                                                                               torf(high_cholesterol), torf(hypertension))
     # Define the problem
     prob = pulp.LpProblem("Bundle_Generation", pulp.LpMaximize)
 
     # Define decision variables for item choices
-    item_choices = pulp.LpVariable.dicts("ItemChoice", [(meal_type, item[0]) for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    item_choices = pulp.LpVariable.dicts("ItemChoice", [(meal_type, sanitize_variable_name(item[0])) for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                                                          for item in (bf_items if meal_type == 'breakfast' else
                                                                       vg_items if meal_type == 'lunch-side' else
                                                                       main_items if meal_type == 'lunch' else
@@ -28,7 +69,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Define the objective function
     # Maximize the recommendation score
-    prob += sum([item_choices[meal_type, item[0]] * item[22] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[22] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -39,7 +80,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     #Define constraints
     # Exactly one item per meal type for each bundle
     for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']:
-        prob += sum([item_choices[meal_type, item[0]] for item in (bf_items if meal_type == 'breakfast' else
+        prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] for item in (bf_items if meal_type == 'breakfast' else
                                                                    vg_items if meal_type == 'lunch-side' else
                                                                    main_items if meal_type == 'lunch' else
                                                                    wg_items if meal_type == 'dinner-side-wg' else
@@ -47,7 +88,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                                                                    main_items)]) == 1
 
     # Calorie constraint (maximum 2250 calories for all meals)
-    prob += sum([item_choices[meal_type, item[0]] * item[11] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[11] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -57,7 +98,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Carbohydrate constraint 
     # Get amount per patient as % of overall calories: should be 50-60% # 4 cal / 1 g carbohydrate
-    prob += sum([item_choices[meal_type, item[0]] * item[16] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[16] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -66,7 +107,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               main_items)]) <= carb_needs
 
     # Protein constraint IBW
-    prob += sum([item_choices[meal_type, item[0]] * item[17] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[17] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -74,7 +115,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               vg_items if meal_type == 'dinner-side-vg' else
                               main_items)]) >= protein_needs_lower
     # Protein constraint IBW
-    prob += sum([item_choices[meal_type, item[0]] * item[17] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[17] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -84,7 +125,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     
     # Fiber constraint (minimum 25 for entire bundle) 
     # Amount per patient: should be 25-35 g
-    prob += sum([item_choices[meal_type, item[0]] * item[18] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[18] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -94,7 +135,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Total Fat constraint
     #  <30% of kcals # 9 cal / 1 g fat 
-    prob += sum([item_choices[meal_type, item[0]] * item[19] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[19] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -104,7 +145,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     
     # Saturated Fat constraint
     #  <10% of kcals # 9 cal / 1 g fat 
-    prob += sum([item_choices[meal_type, item[0]] * item[12] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[12] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -113,7 +154,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               main_items)]) <= satfat_needs
     
     # Sugar constraints
-    prob += sum([item_choices[meal_type, item[0]] * item[13] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[13] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -123,7 +164,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
     
     # Sodium constraint
     #   <2300 mg
-    prob += sum([item_choices[meal_type, item[0]] * item[15] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+    prob += sum([item_choices[meal_type, sanitize_variable_name(item[0])] * item[15] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
                  for item in (bf_items if meal_type == 'breakfast' else
                               vg_items if meal_type == 'lunch-side' else
                               main_items if meal_type == 'lunch' else
@@ -134,24 +175,24 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Duration constraint (maximum 35 minutes for bf)(maximum 45 minutes for lunch) 
     # (maximum 30 minutes for side dish)(maximum 120 minutes for dinner main)
-    prob += sum([item_choices['breakfast', item[0]] * item[2] for item in bf_items]) <= 20
-    prob += sum([item_choices['lunch-side', item[0]] * item[2] for item in vg_items]) <= 15
-    prob += sum([item_choices['lunch', item[0]] * item[2] for item in main_items]) <= 45
-    prob += sum([item_choices['dinner-side-wg', item[0]] * item[2] for item in wg_items]) <= 15
-    prob += sum([item_choices['dinner-side-vg', item[0]] * item[2] for item in vg_items]) <= 15
-    prob += sum([item_choices['dinner-main', item[0]] * item[2] for item in main_items]) <= 100
+    prob += sum([item_choices['breakfast',sanitize_variable_name(item[0])] * item[2] for item in bf_items]) <= 20
+    prob += sum([item_choices['lunch-side', sanitize_variable_name(item[0])] * item[2] for item in vg_items]) <= 15
+    prob += sum([item_choices['lunch', sanitize_variable_name(item[0])] * item[2] for item in main_items]) <= 45
+    prob += sum([item_choices['dinner-side-wg', sanitize_variable_name(item[0])] * item[2] for item in wg_items]) <= 15
+    prob += sum([item_choices['dinner-side-vg', sanitize_variable_name(item[0])] * item[2] for item in vg_items]) <= 15
+    prob += sum([item_choices['dinner-main', sanitize_variable_name(item[0])] * item[2] for item in main_items]) <= 100
 
     # Constraint to prevent selecting the same item for lunch and dinner
     for lunch_item in main_items:
         for dinner_item in main_items:
-            if lunch_item[0] == dinner_item[0]:
-                prob += item_choices['lunch', lunch_item[0]] + item_choices['dinner-main', dinner_item[0]] <= 1
+            if sanitize_variable_name(lunch_item[0]) == sanitize_variable_name(dinner_item[0]):
+                prob += item_choices['lunch', sanitize_variable_name(lunch_item[0])] + item_choices['dinner-main', sanitize_variable_name(dinner_item[0])] <= 1
                 
     # Constraint to prevent selecting the same item for lunch-side and dinner-side
     for lunch_side_item in vg_items:
         for dinner_side_item in vg_items:
-            if lunch_side_item[0] == dinner_side_item[0]:
-                prob += item_choices['lunch-side', lunch_side_item[0]] + item_choices['dinner-side-vg', dinner_side_item[0]] <= 1
+            if sanitize_variable_name(lunch_side_item[0]) == sanitize_variable_name(dinner_side_item[0]):
+                prob += item_choices['lunch-side', sanitize_variable_name(lunch_side_item[0])] + item_choices['dinner-side-vg', sanitize_variable_name(dinner_side_item[0])] <= 1
 
     # List to store bundles
     bundles = []
@@ -167,8 +208,12 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
 
     # Solve the problem iteratively # Generate 10 bundles
     while len(bundles)< 50:
-        # solver = pulp.PULP_CBC_CMD(msg=True)
-        prob.solve()
+        solver = CustomCBCSolver() #pulp.PULP_CBC_CMD(msg=True)
+        status=prob.solve(solver)
+        if status == pulp.LpStatusOptimal:
+            st.write("Objective Value:", pulp.value(prob.objective))
+            for v in prob.variables():
+                st.write(f"{v.name} = {v.varValue}")
         if prob.status == pulp.LpStatusOptimal:
             # Create a bundle from the optimal solution
             bundle = {
@@ -187,7 +232,7 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               wg_items if meal_type == 'dinner-side-wg' else
                               vg_items if meal_type == 'dinner-side-vg' else
                              main_items):
-                    if pulp.value(item_choices[meal_type, item[0]]) == 1:
+                    if pulp.value(item_choices[meal_type, sanitize_variable_name(item[0])]) == 1:
                         bundle[meal_type] = item
             bundles.append(bundle)
 
