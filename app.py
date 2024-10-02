@@ -4,7 +4,7 @@ st.set_page_config(
     page_title="HumbleNutri App",
     page_icon=":green_salad:",
 )
-
+st.title("Home")
 # hide_menu_style = """
 #         <style>
 #         #MainMenu {visibility: hidden;}
