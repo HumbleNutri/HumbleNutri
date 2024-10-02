@@ -44,7 +44,7 @@ def IBW_constraints(gender, height, weight, age, after_surgery, activity_level, 
     # Acrtivitiy level
     if activity_level == 'Sedentary':
         eps = 1.2
-        protein_needs_lower = 0.6
+        protein_needs_lower = ibw_in_kg * 0.6
         protein_needs_upper = ibw_in_kg * 0.8
     elif activity_level == 'Lightly active':
         eps = 1.375
