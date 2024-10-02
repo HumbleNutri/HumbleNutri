@@ -55,7 +55,7 @@ st.markdown(
         Using this approach, we identify if the recipe is a breakfast item or not, if the recipe is an appetizer, main dish, dessert, drink, or sauce, and \
         if the recipe is Latin American food or not. Details of this approach to fully utilize the HUMMUS dataset to build HumbleNutri is included in our\
         paper. HumbleNutri consists of three independent recommender systems for breakfast, appetizers, and main dishes. Using the \
-        recommended items from these recommender systems, we generate the meal bundle. We note that we also apply the initial healthiness filter \
+        recommended items from these recommender systems and feedback from nutritionists, we generate the meal bundle. We note that we also apply the initial healthiness filter \
         using the 'nutri score' suggested by authors of HUMMUS before putting into the recommender system.
     """
     )
