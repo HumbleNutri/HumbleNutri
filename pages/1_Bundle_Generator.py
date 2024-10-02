@@ -133,7 +133,6 @@ def main():
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
         first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
-        st.dataframe(first_week)
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
