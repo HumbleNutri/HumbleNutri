@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from utils import round_up_numbers_in_string
+from utils import round_up_numbers_in_string, get_
 # pip install openpyxl # dependency for pd.read_excel()
 
 
@@ -23,17 +23,6 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
-
-def get_(x):
-    _mapping = {
-        "Breakfast": "breakfast",
-        "Lunch": "lunch",
-        "Lunch-Side": "lunch-side",
-        "Dinner-Main": "dinner-main",
-        "Dinner-Side (whole-grains)": "dinner-side-wg",
-        "Dinner-Side (vegetables)":"dinner-side-vg"
-    }
-    return _mapping.get(x)
 
 # main meals # side dishes can be made in parallel to the main dishes
 main_meals = ['breakfast','lunch','dinner-main']

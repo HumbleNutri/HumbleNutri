@@ -64,6 +64,7 @@ def main():
             # Show nutrients
             viz_df = viz_df.replace(['breakfast','lunch','lunch-side','dinner-main','dinner-side-wg','dinner-side-vg'],
                                     ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"])
+            viz_df = viz_df.reindex([0,2,1,5,3,4]).reset_index(drop=True)
             st.dataframe(viz_df[key_info].rename(columns={"meal_type":"Meal Type",
                                                           "servingSize [g]":"Serving Size [g]",
                                                           "duration":"Duration",

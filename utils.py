@@ -17,6 +17,28 @@ def torf(input_str):
     
     return output_str
 
+def get_(x):
+    _mapping = {
+        "Breakfast": "breakfast",
+        "Lunch": "lunch",
+        "Lunch-Side": "lunch-side",
+        "Dinner-Main": "dinner-main",
+        "Dinner-Side (whole-grains)": "dinner-side-wg",
+        "Dinner-Side (vegetables)":"dinner-side-vg"
+    }
+    return _mapping.get(x)
+
+def change_order(lst):
+    # Move Lunch after breakfast
+    lunch = lst.pop(2)
+    lst.insert(1, lunch)
+
+    # Move Dinner after lunch-side
+    dinner = lst.pop(5)
+    lst.insert(3, dinner)
+
+    return lst
+
 def get_user(user):
     user_mapping = {
         'User-1': 159,

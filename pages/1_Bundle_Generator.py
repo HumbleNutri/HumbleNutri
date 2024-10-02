@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import io
-from utils import get_obesity_status # get_user
+from utils import get_obesity_status, change_order # get_user
 from optimize_LP import LP_MealBundle
 from constraints import calc_bmi, get_ibw, IBW_constraints
 
@@ -133,14 +133,15 @@ def main():
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
         first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
+        st.dataframe(first_week)
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': list(first_week[first_week.bundle_num=='Bundle-1']['title']),
+                    'Wednesday': change_order(list(first_week[first_week.bundle_num=='Bundle-1']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': list(first_week[first_week.bundle_num=='Bundle-2']['title']),
-                    'Sunday': list(first_week[first_week.bundle_num=='Bundle-3']['title'])}
+                    'Saturday': change_order(list(first_week[first_week.bundle_num=='Bundle-2']['title'])),
+                    'Sunday': change_order(list(first_week[first_week.bundle_num=='Bundle-3']['title']))}
         first_week_df = pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(first_week_df)
@@ -153,11 +154,11 @@ def main():
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': list(second_week[second_week.bundle_num=='Bundle-4']['title']),
+                    'Wednesday': change_order(list(second_week[second_week.bundle_num=='Bundle-4']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': list(second_week[second_week.bundle_num=='Bundle-5']['title']),
-                    'Sunday': list(second_week[second_week.bundle_num=='Bundle-6']['title'])}
+                    'Saturday': change_order(list(second_week[second_week.bundle_num=='Bundle-5']['title'])),
+                    'Sunday': change_order(list(second_week[second_week.bundle_num=='Bundle-6']['title']))}
         second_week_df=pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(second_week_df)
