@@ -64,9 +64,10 @@ st.text("")
 
 st.markdown(
     """
-       In this prototype web app, we generate a weekly bundles for users that we picked from the HUMMUS dataset. Users were selected if they: \
-        i) Contributed a minimum of 5 reviews ii) Reviewed at least one item each from breakfast, appetizers, and main dishes \
+       In this prototype web app, we generate a weekly bundles for users that we picked from the HUMMUS dataset. We selected an example user by: \
+        i) Contributed a minimum of 30 reviews ii) Reviewed at least one item each from breakfast, appetizers, and main dishes \
         iii) a significant portion of their reviews were dedicated to Latin American cuisine. We consider the top 25% recommended items for each user as a candidate recipes. \
+        Example user that was used in this prototype could be substitute with your patient, when your patient provide us with their recipe preference (e.g. ratings on recipes). \
         We then apply linear programming with objective function to maximize recommendation score from the recommender system to tailor the bundles to each user \
         along with multiple constraints based on mock patient information (age, weight, health condition, etc.) that we assigned to each user to generate bundles from candidate items. \
         Details of this approach is be also included in our paper.
