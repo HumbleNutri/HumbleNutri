@@ -163,23 +163,30 @@ def main():
         st.table(second_week_df)
         st.write("* Weekly plan B: Next 3 bundles (Bundle-4, 5, 6) from the entire bundle set")
 
-
-    # Download button for csv
-    try:
-        # st.download_button(
-        # label="Download all bundles as CSV",
-        # data=convert_df(lp_df),
-        # file_name="HumbleNutri_Bundles.csv",
-        # mime="text/csv",
-        # )
         st.download_button(
         label="Download bundles and patient constraints in Excel",
         data=to_excel(lp_df, constraints_df),
         file_name="HumbleNutri_Bundles.xlsx",
         mime="application/vnd.ms-excel",
         )
-    except:
-        pass
+
+
+    # # Download button for csv
+    # try:
+    #     # st.download_button(
+    #     # label="Download all bundles as CSV",
+    #     # data=convert_df(lp_df),
+    #     # file_name="HumbleNutri_Bundles.csv",
+    #     # mime="text/csv",
+    #     # )
+    #     st.download_button(
+    #     label="Download bundles and patient constraints in Excel",
+    #     data=to_excel(lp_df, constraints_df),
+    #     file_name="HumbleNutri_Bundles.xlsx",
+    #     mime="application/vnd.ms-excel",
+    #     )
+    # except:
+    #     pass
     
 
 
