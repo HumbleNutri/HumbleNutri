@@ -48,7 +48,7 @@ def to_excel(df1, df2):
 #     return df.to_csv(index=False).encode("utf-8")
 
 def main():
-    st.title('Bundle Generator') # HumbleNutri App prototype
+    st.title('Meal Plan Generator') # HumbleNutri App prototype
     # # Initialize session state
     # if 'submitted' in st.session_state.keys():
     #     del st.session_state['submitted']
