@@ -163,7 +163,8 @@ def main():
         second_week_df=pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(second_week_df)
-        # st.write("* Weekly plan B: Next 3 bundles (Bundle-4, 5, 6) from the entire bundle set")
+        st.write("* Weekly plans were randomly chose from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
+        st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
         st.download_button(
         label="Download these weekly meal plans in Excel",
         data=to_excel(weekly_plan, constraints_df),
