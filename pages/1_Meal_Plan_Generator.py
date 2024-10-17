@@ -67,13 +67,12 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    # if submitted:
-    #     st.session_state.submitted = True
-
-    # # Run LP and show result
-    # if "submitted" in st.session_state:
+    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
+        st.session_state.submitted = True
+
+    # Run LP and show result
+    if "submitted" in st.session_state: #if submitted:
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
@@ -165,37 +164,24 @@ def main():
         st.table(second_week_df)
         st.write("* Weekly plans were randomly chose from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
         st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
+
+    # Download button for csv
+    try:
         st.download_button(
-        label="Download these weekly meal plans in Excel",
-        data=to_excel(weekly_plan, constraints_df),
-        file_name="HumbleNutri_Bundles.xlsx",
-        mime="application/vnd.ms-excel",
-        )
+            label="Download these weekly meal plans in Excel",
+            data=to_excel(weekly_plan, constraints_df),
+            file_name="HumbleNutri_MealPlans.xlsx",
+            mime="application/vnd.ms-excel"
+            )
 
         st.download_button(
-        label="Download all bundles and patient constraints in Excel",
-        data=to_excel(lp_df, constraints_df),
-        file_name="HumbleNutri_Bundles.xlsx",
-        mime="application/vnd.ms-excel",
-        )
-
-
-    # # Download button for csv
-    # try:
-    #     # st.download_button(
-    #     # label="Download all bundles as CSV",
-    #     # data=convert_df(lp_df),
-    #     # file_name="HumbleNutri_Bundles.csv",
-    #     # mime="text/csv",
-    #     # )
-    #     st.download_button(
-    #     label="Download bundles and patient constraints in Excel",
-    #     data=to_excel(lp_df, constraints_df),
-    #     file_name="HumbleNutri_Bundles.xlsx",
-    #     mime="application/vnd.ms-excel",
-    #     )
-    # except:
-    #     pass
+            label="Download all bundles and patient constraints in Excel",
+            data=to_excel(lp_df, constraints_df),
+            file_name="HumbleNutri_Bundles.xlsx",
+            mime="application/vnd.ms-excel"
+            )
+    except:
+        pass
     
 
 
