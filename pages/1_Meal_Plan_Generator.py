@@ -175,8 +175,8 @@ def main():
             file_name="HumbleNutri_MealPlans.xlsx",
             mime="application/vnd.ms-excel"
             )
-    # Re submit
-    submitted = st.form_submit_button("Re-generate for different meal plan")
+        # Re submit
+        submitted = st.form_submit_button("Re-generate for different meal plan")
 
 
     # # Download button for csv
