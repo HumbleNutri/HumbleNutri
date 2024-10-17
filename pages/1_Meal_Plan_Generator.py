@@ -67,13 +67,12 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    # if submitted:
-    #     st.session_state.submitted = True
-
-    # # Run LP and show result
-    # if "submitted" in st.session_state:
+    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
+        st.session_state.submitted = True
+
+    # Run LP and show result
+    if "submitted" in st.session_state: #if submitted:
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
