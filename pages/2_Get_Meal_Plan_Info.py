@@ -39,7 +39,7 @@ def main():
     # Input from the user
     try:
         with st.form("input_form"):
-            bundle_number = st.selectbox('Choose a Meal Bundle', sorted(set(lp_df['bundle_num']), key=lambda x: int(x.split('-')[-1])))
+            meal_number = st.selectbox('Choose a Meal Bundle', sorted(set(lp_df['meal_num']), key=lambda x: int(x.split('-')[-1])))
             ### Submit
             submitted = st.form_submit_button("Submit")
         # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
@@ -50,7 +50,7 @@ def main():
         # if "submitted" in st.session_state:
         if submitted:
             # Chosen bundle
-            viz_df = lp_df[lp_df['bundle_num']==bundle_number].reset_index(drop=True)
+            viz_df = lp_df[lp_df['meal_num']==meal_number].reset_index(drop=True)
             # Show main metric
             col1, col2, col3, col4 = st.columns(4)
             col1.metric("Total meal bundle calories", f"{round(viz_df['calories [cal]'].sum())} (cal)")
