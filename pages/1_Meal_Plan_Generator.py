@@ -55,8 +55,8 @@ def main():
     # Input from the user
     with st.form("input_form"):
         gender_choice = st.selectbox('Gender', ['Male', 'Female'])
-        height_choice = st.number_input('Height (inches)', step=0.1) #  min_value=60.0, max_value=100.0
-        weight_choice = st.number_input('Weight (lbs)', step=0.1) # min_value=70.0, max_value=650.0
+        height_choice = st.number_input('Height (cm)', min_value=150.0, max_value=250.0, step=0.1) 
+        weight_choice = st.number_input('Weight (kg)', min_value=35.0, max_value=300.0, step=0.1) 
         age_choice = st.number_input('Age', min_value=18, max_value=100, step=1)
         after_surgery_choice = st.radio('Post-Surgery Recovery Phase', [True, False])
         activity_level_choice = st.selectbox('Activity Level', ['Sedentary', 'Lightly active', 'Moderately active', 'Active', 'Very active'])
@@ -74,9 +74,9 @@ def main():
     # # Run LP and show result
     # if "submitted" in st.session_state: 
     if submitted:
-        # Re calculate
-        height_choice = height_choice * 2.54
-        weight_choice = weight_choice * 0.453592
+        # # Re calculate
+        # height_choice = height_choice * 2.54
+        # weight_choice = weight_choice * 0.453592
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
@@ -173,10 +173,10 @@ def main():
             label="Download these weekly meal plans in Excel",
             data=to_excel(weekly_plan, constraints_df),
             file_name="HumbleNutri_MealPlans.xlsx",
-            mime="application/vnd.ms-excel"
-            )
+            mime="application/vnd.ms-excel",
+        )
         # Re submit
-        submitted = st.form_submit_button("Re-generate for different meal plan")
+        st.form_submit_button("Re-generate for different meal plan")
 
 
     # # Download button for csv
