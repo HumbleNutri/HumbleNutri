@@ -23,7 +23,7 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
-feature_lst = ['bundle_num','meal_type','title', 'description','duration', 'directions','ingredients',
+feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
                'direction_size','ingredients_sizes',
                'average_rating', 'number_of_ratings',
                 'servingsPerRecipe', 'servingSize [g]',
@@ -55,8 +55,8 @@ def main():
     # Input from the user
     with st.form("input_form"):
         gender_choice = st.selectbox('Gender', ['Male', 'Female'])
-        height_choice = st.number_input('Height (inches)', placeholder="Type a height...", step=0.1) #  min_value=60.0, max_value=100.0
-        weight_choice = st.number_input('Weight (lbs)', placeholder="Type a weight...", step=0.1) # min_value=70.0, max_value=650.0
+        height_choice = st.number_input('Height (inches)', step=0.1) #  min_value=60.0, max_value=100.0
+        weight_choice = st.number_input('Weight (lbs)', step=0.1) # min_value=70.0, max_value=650.0
         age_choice = st.number_input('Age', min_value=18, max_value=100, step=1)
         after_surgery_choice = st.radio('Post-Surgery Recovery Phase', [True, False])
         activity_level_choice = st.selectbox('Activity Level', ['Sedentary', 'Lightly active', 'Moderately active', 'Active', 'Very active'])
@@ -126,7 +126,7 @@ def main():
         for i, d in enumerate(all_bundles):
             for key, value in d.items():
                 if key != 'objective_value':
-                    lp_lst.append(('Bundle-'+str(i+1), key, *value))
+                    lp_lst.append(('Daily Meals-'+str(i+1), key, *value))
         # to df
         lp_tmp = pd.DataFrame(lp_lst,columns=feature_lst)
         # lp_tmp['patient_num'] = user
@@ -136,16 +136,16 @@ def main():
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
-        weekly_plan = lp_df[lp_df['bundle_num'].isin(pd.Series(lp_df['bundle_num'].unique()).sample(n=6))].reset_index(drop=True)
-        weekly_plan['bundle_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
+        weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6))].reset_index(drop=True)
+        weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-1']['title'])),
+                    'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-1']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-2']['title'])),
-                    'Sunday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-3']['title']))}
+                    'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-2']['title'])),
+                    'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-3']['title']))}
         first_week_df = pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(first_week_df)
@@ -158,11 +158,11 @@ def main():
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-4']['title'])),
+                    'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-4']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-5']['title'])),
-                    'Sunday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-6']['title']))}
+                    'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-5']['title'])),
+                    'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-6']['title']))}
         second_week_df=pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(second_week_df)
