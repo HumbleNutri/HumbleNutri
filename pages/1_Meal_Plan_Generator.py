@@ -165,19 +165,19 @@ def main():
         st.table(second_week_df)
         st.write("* Weekly plans were randomly chose from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
         st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
-        st.download_button(
-        label="Download these weekly meal plans in Excel",
-        data=to_excel(weekly_plan, constraints_df),
-        file_name="HumbleNutri_Bundles.xlsx",
-        mime="application/vnd.ms-excel",
-        )
+    st.download_button(
+    label="Download these weekly meal plans in Excel",
+    data=to_excel(weekly_plan, constraints_df),
+    file_name="HumbleNutri_MealPlans.xlsx",
+    mime="application/vnd.ms-excel",
+    )
 
-        st.download_button(
-        label="Download all bundles and patient constraints in Excel",
-        data=to_excel(lp_df, constraints_df),
-        file_name="HumbleNutri_Bundles.xlsx",
-        mime="application/vnd.ms-excel",
-        )
+    st.download_button(
+    label="Download all bundles and patient constraints in Excel",
+    data=to_excel(lp_df, constraints_df),
+    file_name="HumbleNutri_Bundles.xlsx",
+    mime="application/vnd.ms-excel",
+    )
 
 
     # # Download button for csv
