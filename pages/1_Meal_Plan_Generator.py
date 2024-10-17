@@ -48,7 +48,7 @@ def to_excel(df1, df2):
 #     return df.to_csv(index=False).encode("utf-8")
 
 def main():
-    st.title('Bundle Generator') # HumbleNutri App prototype
+    st.title('Meal Plan Generator') # HumbleNutri App prototype
     # # Initialize session state
     # if 'submitted' in st.session_state.keys():
     #     del st.session_state['submitted']
@@ -58,7 +58,7 @@ def main():
         height_choice = st.number_input('Height (cm)', min_value=150.0, max_value=250.0, step=0.1)
         weight_choice = st.number_input('Weight (kg)', min_value=35.0, max_value=300.0, step=0.1)
         age_choice = st.number_input('Age', min_value=18, max_value=100, step=1)
-        after_surgery_choice = st.radio('After Surgery', [True, False])
+        after_surgery_choice = st.radio('Post-Surgery Recovery Phase', [True, False])
         activity_level_choice = st.selectbox('Activity Level', ['Sedentary', 'Lightly active', 'Moderately active', 'Active', 'Very active'])
         pre_diabetes_choice = st.radio('Pre-Diabetes', [True, False])
         high_cholesterol_choice = st.radio('High Cholesterol', [True, False])
@@ -132,39 +132,48 @@ def main():
         # Write weekly plan 
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
-        first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
+        # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
+        weekly_plan = lp_df[lp_df['bundle_num'].isin(pd.Series(lp_df['bundle_num'].unique()).sample(n=6))].reset_index(drop=True)
+        weekly_plan['bundle_num'] = [f'Bundle-{i}' for i in range(1, 7) for _ in range(6)]
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(first_week[first_week.bundle_num=='Bundle-1']['title'])),
+                    'Wednesday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-1']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(first_week[first_week.bundle_num=='Bundle-2']['title'])),
-                    'Sunday': change_order(list(first_week[first_week.bundle_num=='Bundle-3']['title']))}
+                    'Saturday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-2']['title'])),
+                    'Sunday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-3']['title']))}
         first_week_df = pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(first_week_df)
-        st.write("* Bundles are sorted based on recommendation score")
-        st.write("* Weekly plan A: First 3 bundles (Bundle-1, 2, 3) from the entire bundle set")
+        # st.write("* Bundles are sorted based on recommendation score")
+        # st.write("* Weekly plan A: First 3 bundles (Bundle-1, 2, 3) from the entire bundle set")
         # Write weekly plan
         st.header("Weekly Plan B", divider="green")
         # Bundles are already sorted by rec_score
-        second_week = lp_df[lp_df['bundle_num'].isin(['Bundle-4','Bundle-5','Bundle-6'])].reset_index(drop=True)
+        # second_week = lp_df[lp_df['bundle_num'].isin(['Bundle-4','Bundle-5','Bundle-6'])].reset_index(drop=True)
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(second_week[second_week.bundle_num=='Bundle-4']['title'])),
+                    'Wednesday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-4']['title'])),
                     'Thursday': ['♻️ (Leftovers)'] * 6,
                     'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(second_week[second_week.bundle_num=='Bundle-5']['title'])),
-                    'Sunday': change_order(list(second_week[second_week.bundle_num=='Bundle-6']['title']))}
+                    'Saturday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-5']['title'])),
+                    'Sunday': change_order(list(weekly_plan[weekly_plan.bundle_num=='Bundle-6']['title']))}
         second_week_df=pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(second_week_df)
-        st.write("* Weekly plan B: Next 3 bundles (Bundle-4, 5, 6) from the entire bundle set")
+        st.write("* Weekly plans were randomly chose from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
+        st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
+        st.download_button(
+        label="Download these weekly meal plans in Excel",
+        data=to_excel(weekly_plan, constraints_df),
+        file_name="HumbleNutri_Bundles.xlsx",
+        mime="application/vnd.ms-excel",
+        )
 
         st.download_button(
-        label="Download bundles and patient constraints in Excel",
+        label="Download all bundles and patient constraints in Excel",
         data=to_excel(lp_df, constraints_df),
         file_name="HumbleNutri_Bundles.xlsx",
         mime="application/vnd.ms-excel",
