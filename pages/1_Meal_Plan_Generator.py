@@ -67,13 +67,13 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    # if submitted:
-    #     st.session_state.submitted = True
-
-    # # Run LP and show result
-    # if "submitted" in st.session_state: 
+    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
+        st.session_state.submitted = True
+
+    # Run LP and show result
+    if "submitted" in st.session_state: 
+    #if submitted:
         # # Re calculate
         # height_choice = height_choice * 2.54
         # weight_choice = weight_choice * 0.453592
@@ -173,11 +173,12 @@ def main():
             label="Download these weekly meal plans in Excel",
             data=to_excel(weekly_plan, constraints_df),
             file_name="HumbleNutri_MealPlans.xlsx",
-            mime="application/vnd.ms-excel",
+            mime="application/vnd.ms-excel"
         )
         # Re submit
         if st.button("Re-generate for different meal plan"):
-            st.rerun()
+            st.session_state.submitted = True
+
 
 
     # # Download button for csv
