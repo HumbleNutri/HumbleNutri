@@ -176,7 +176,8 @@ def main():
             mime="application/vnd.ms-excel",
         )
         # Re submit
-        st.form_submit_button("Re-generate for different meal plan")
+        if st.button("Re-generate for different meal plan"):
+            st.rerun()
 
 
     # # Download button for csv
