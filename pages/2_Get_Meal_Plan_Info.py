@@ -39,7 +39,7 @@ def main():
     # Input from the user
     try:
         with st.form("input_form"):
-            bundle_number = st.selectbox('Choose a Bundle', sorted(set(lp_df['bundle_num']), key=lambda x: int(x.split('-')[-1])))
+            bundle_number = st.selectbox('Choose a Meal Bundle', sorted(set(lp_df['bundle_num']), key=lambda x: int(x.split('-')[-1])))
             ### Submit
             submitted = st.form_submit_button("Submit")
         # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
@@ -53,7 +53,7 @@ def main():
             viz_df = lp_df[lp_df['bundle_num']==bundle_number].reset_index(drop=True)
             # Show main metric
             col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Total bundle calories", f"{round(viz_df['calories [cal]'].sum())} (cal)")
+            col1.metric("Total meal bundle calories", f"{round(viz_df['calories [cal]'].sum())} (cal)")
             col2.metric("Total meal prep time", f"{round(viz_df[viz_df['meal_type'].isin(main_meals)]['duration'].sum())} (min)")
             col3.metric("Total servings made", f"{viz_df['servingsPerRecipe'].sum()}")
             col4.metric("Average ratings", f"{round(viz_df['average_rating'].mean(),2)}")
@@ -92,7 +92,7 @@ def main():
                         labels={'Daily Value %': '% Daily Value'}, color = 'Category',
                         color_discrete_map={'Restricted': 'red',
                                             'Recommended': 'green'},
-                        title='Total Nutritional Contents of Bundle')
+                        title='Total Nutritional Contents of the Meal Bundle')
             st.plotly_chart(fig, use_container_width=True)
 
     except:

@@ -55,8 +55,8 @@ def main():
     # Input from the user
     with st.form("input_form"):
         gender_choice = st.selectbox('Gender', ['Male', 'Female'])
-        height_choice = st.number_input('Height (cm)', min_value=150.0, max_value=250.0, step=0.1)
-        weight_choice = st.number_input('Weight (kg)', min_value=35.0, max_value=300.0, step=0.1)
+        height_choice = st.number_input('Height (inches)', placeholder="Type a height...", step=0.1) #  min_value=60.0, max_value=100.0
+        weight_choice = st.number_input('Weight (lbs)', placeholder="Type a weight...", step=0.1) # min_value=70.0, max_value=650.0
         age_choice = st.number_input('Age', min_value=18, max_value=100, step=1)
         after_surgery_choice = st.radio('Post-Surgery Recovery Phase', [True, False])
         activity_level_choice = st.selectbox('Activity Level', ['Sedentary', 'Lightly active', 'Moderately active', 'Active', 'Very active'])
@@ -74,6 +74,9 @@ def main():
     # # Run LP and show result
     # if "submitted" in st.session_state: 
     if submitted:
+        # Re calculate
+        height_choice = height_choice * 2.54
+        weight_choice = weight_choice * 0.453592
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
@@ -134,7 +137,7 @@ def main():
         # Bundles are already sorted by rec_score
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
         weekly_plan = lp_df[lp_df['bundle_num'].isin(pd.Series(lp_df['bundle_num'].unique()).sample(n=6))].reset_index(drop=True)
-        weekly_plan['bundle_num'] = [f'Bundle-{i}' for i in range(1, 7) for _ in range(6)]
+        weekly_plan['bundle_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
                     'Tuesday': ['♻️ (Leftovers)'] * 6,
@@ -163,8 +166,8 @@ def main():
         second_week_df=pd.DataFrame(schedule)
         # st.dataframe(first_week_df, hide_index = True)
         st.table(second_week_df)
-        st.write("* Weekly plans were randomly chosen from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
-        st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
+        # st.write("* Weekly plans were randomly chosen from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
+        # st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
         
         st.download_button(
             label="Download these weekly meal plans in Excel",
@@ -172,13 +175,9 @@ def main():
             file_name="HumbleNutri_MealPlans.xlsx",
             mime="application/vnd.ms-excel"
             )
+    # Re submit
+    submitted = st.form_submit_button("Re-generate for different meal plan")
 
-        st.download_button(
-            label="Download all bundles and patient constraints in Excel",
-            data=to_excel(lp_df, constraints_df),
-            file_name="HumbleNutri_Bundles.xlsx",
-            mime="application/vnd.ms-excel"
-            )
 
     # # Download button for csv
     # try:
