@@ -73,13 +73,13 @@ def main():
     # height_choice = height_choice * 2.54
     # weight_choice = weight_choice * 0.453592
 
-    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    # if submitted:
-    #     st.session_state.submitted = True
-    
-    # # Run LP and show result
-    # if "submitted" in st.session_state: 
+    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
+        st.session_state.submitted = True
+    
+    # Run LP and show result
+    if "submitted" in st.session_state: 
+    # if submitted:
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
@@ -139,7 +139,7 @@ def main():
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
         if sampling_key == None:
-            sampling_key = random.randint(0, 1000)
+            sampling_key = 0
         st.write(sampling_key)
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
         weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6, random_state=sampling_key))].reset_index(drop=True)
@@ -181,10 +181,10 @@ def main():
             file_name="HumbleNutri_MealPlans.xlsx",
             mime="application/vnd.ms-excel"
         )
-        # # Re submit
-        # if st.button("Re-generate for different meal plan"):
-        #     st.session_state.submitted = True
-        #     sampling_key = None
+        # Re submit
+        if st.button("Re-generate for different meal plan"):
+            st.session_state.submitted = True
+            sampling_key += 1
 
 
 
