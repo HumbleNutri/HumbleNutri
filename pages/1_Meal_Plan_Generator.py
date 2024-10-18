@@ -24,7 +24,6 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
-sampling_key = None
 feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
                'direction_size','ingredients_sizes',
                'average_rating', 'number_of_ratings',
@@ -69,6 +68,7 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
+    sampling_key = None
     # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
         st.session_state.submitted = True
