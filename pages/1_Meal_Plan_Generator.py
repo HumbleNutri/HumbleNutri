@@ -181,10 +181,10 @@ def main():
             file_name="HumbleNutri_MealPlans.xlsx",
             mime="application/vnd.ms-excel"
         )
-        # Re submit
-        if st.button("Re-generate for different meal plan"):
-            st.session_state.submitted = True
-            sampling_key = None
+        # # Re submit
+        # if st.button("Re-generate for different meal plan"):
+        #     st.session_state.submitted = True
+        #     sampling_key = None
 
 
 
