@@ -68,13 +68,13 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    # if submitted:
-    #     st.session_state.submitted = True
-    sampling_key = None
-    # # Run LP and show result
-    # if "submitted" in st.session_state: 
+    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
+        st.session_state.submitted = True
+    sampling_key = None
+    # Run LP and show result
+    if "submitted" in st.session_state: 
+    # if submitted:
         # # Re calculate
         # height_choice = height_choice * 2.54
         # weight_choice = weight_choice * 0.453592
