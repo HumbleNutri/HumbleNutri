@@ -179,7 +179,6 @@ def main():
                 file_name="HumbleNutri_MealPlans.xlsx",
                 mime="application/vnd.ms-excel"
             )
-            st.session_state.submitted = False
         except:
             pass
         # Re submit
