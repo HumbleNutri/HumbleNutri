@@ -68,7 +68,6 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    sampling_key = None
     # # Re calculate
     # height_choice = height_choice * 2.54
     # weight_choice = weight_choice * 0.453592
@@ -138,7 +137,10 @@ def main():
         # Write weekly plan 
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
-        if sampling_key == None:
+        try:
+            if sampling_key:
+                st.write(sampling_key)
+        except NameError:
             sampling_key = 0
         st.write(sampling_key)
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
