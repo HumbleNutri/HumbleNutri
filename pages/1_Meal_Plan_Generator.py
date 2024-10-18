@@ -174,7 +174,7 @@ def main():
         st.table(second_week_df)
         # st.write("* Weekly plans were randomly chosen from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
         # st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
-    try:
+
         st.download_button(
             label="Download these weekly meal plans in Excel",
             data=to_excel(weekly_plan, constraints_df),
@@ -185,8 +185,7 @@ def main():
         if st.button("Re-generate for different meal plan"):
             st.session_state.submitted = True
             sampling_key = None
-    except:
-        pass
+
 
 
     # # Download button for csv
