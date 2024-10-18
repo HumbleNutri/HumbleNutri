@@ -24,6 +24,7 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
+sampling_key = None
 feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
                'direction_size','ingredients_sizes',
                'average_rating', 'number_of_ratings',
@@ -71,7 +72,7 @@ def main():
     # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     if submitted:
         st.session_state.submitted = True
-    sampling_key = None
+    
     # Run LP and show result
     if "submitted" in st.session_state: 
     # if submitted:
@@ -138,7 +139,7 @@ def main():
         # Bundles are already sorted by rec_score
         if sampling_key == None:
             sampling_key = random.randint(0, 1000)
-
+        st.write(sampling_key)
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
         weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6, random_state=sampling_key))].reset_index(drop=True)
         weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
