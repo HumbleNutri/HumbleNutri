@@ -69,16 +69,17 @@ def main():
         submitted = st.form_submit_button("Submit")
     
     sampling_key = None
-    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-    if submitted:
-        st.session_state.submitted = True
-    
-    # Run LP and show result
-    if "submitted" in st.session_state: 
+    # # Re calculate
+    # height_choice = height_choice * 2.54
+    # weight_choice = weight_choice * 0.453592
+
+    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
     # if submitted:
-        # # Re calculate
-        # height_choice = height_choice * 2.54
-        # weight_choice = weight_choice * 0.453592
+    #     st.session_state.submitted = True
+    
+    # # Run LP and show result
+    # if "submitted" in st.session_state: 
+    if submitted:
         # Calculate health info based on submitted information
         bmi = calc_bmi(height_choice, weight_choice)
         ibw_in_kg = get_ibw(gender = gender_choice, height = height_choice, weight = weight_choice, bmi=bmi)
@@ -183,8 +184,6 @@ def main():
         if st.button("Re-generate for different meal plan"):
             st.session_state.submitted = True
             sampling_key = None
-
-
 
 
     # # Download button for csv
