@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import random
 import pickle
 import io
 from utils import get_obesity_status, change_order # get_user
@@ -67,13 +68,13 @@ def main():
         ### Submit
         submitted = st.form_submit_button("Submit")
     
-    # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
+    # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
+    # if submitted:
+    #     st.session_state.submitted = True
+    sampling_key = None
+    # # Run LP and show result
+    # if "submitted" in st.session_state: 
     if submitted:
-        st.session_state.submitted = True
-
-    # Run LP and show result
-    if "submitted" in st.session_state: 
-    #if submitted:
         # # Re calculate
         # height_choice = height_choice * 2.54
         # weight_choice = weight_choice * 0.453592
@@ -135,8 +136,11 @@ def main():
         # Write weekly plan 
         st.header("Weekly Plan A", divider="blue")
         # Bundles are already sorted by rec_score
+        if sampling_key == None:
+            sampling_key = random.randint(0, 1000)
+
         # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
-        weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6))].reset_index(drop=True)
+        weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6, random_state=sampling_key))].reset_index(drop=True)
         weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
         schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                     'Monday': ['♻️ (Leftovers)'] * 6 ,
@@ -168,19 +172,21 @@ def main():
         st.table(second_week_df)
         # st.write("* Weekly plans were randomly chosen from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
         # st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
+        try:
+            st.download_button(
+                label="Download these weekly meal plans in Excel",
+                data=to_excel(weekly_plan, constraints_df),
+                file_name="HumbleNutri_MealPlans.xlsx",
+                mime="application/vnd.ms-excel"
+            )
+            st.session_state.submitted = False
+        except:
+            pass
         # Re submit
         if st.button("Re-generate for different meal plan"):
             st.session_state.submitted = True
-    try:
-        st.download_button(
-            label="Download these weekly meal plans in Excel",
-            data=to_excel(weekly_plan, constraints_df),
-            file_name="HumbleNutri_MealPlans.xlsx",
-            mime="application/vnd.ms-excel"
-        )
-        st.session_state.submitted = False
-    except:
-        pass
+            sampling_key = None
+
 
 
 
