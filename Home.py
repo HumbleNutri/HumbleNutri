@@ -82,3 +82,7 @@ st.markdown(
         ##### 👉️ Check out [the GitHub repo](https://github.com/HumbleNutri/HumbleNutri)
     """
 )
+
+# Initialize session state
+if 'submitted' in st.session_state.keys():
+    del st.session_state['submitted']

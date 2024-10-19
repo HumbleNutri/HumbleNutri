@@ -22,6 +22,9 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
+# Initialize session state
+if 'submitted' in st.session_state.keys():
+    del st.session_state['submitted']
 # main meals # side dishes can be made in parallel to the main dishes
 main_meals = ['breakfast','lunch','dinner-main']
 key_info = ['meal_type', 'servingSize [g]', 'duration', 'average_rating','calories [cal]','totalCarbohydrate [g]',

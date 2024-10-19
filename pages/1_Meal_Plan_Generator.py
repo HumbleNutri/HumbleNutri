@@ -24,6 +24,39 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
+# hide_streamlit_style = """
+#                 <style>
+#                 div[data-testid="stToolbar"] {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 position: fixed;
+#                 }
+#                 div[data-testid="stDecoration"] {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 position: fixed;
+#                 }
+#                 div[data-testid="stStatusWidget"] {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 position: fixed;
+#                 }
+#                 #MainMenu {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 }
+#                 header {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 }
+#                 footer {
+#                 visibility: hidden;
+#                 height: 0%;
+#                 }
+#                 </style>
+#                 """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
                'direction_size','ingredients_sizes',
                'average_rating', 'number_of_ratings',
@@ -44,15 +77,21 @@ def to_excel(df1, df2):
         worksheet2 = writer.sheets['Sheet2']
     return output.getvalue()
 
+@st.experimental_fragment
+def download_file(df1, df2):
+    st.download_button(
+            label="Download these weekly meal plans in Excel",
+            data=to_excel(df1, df2),
+            file_name="HumbleNutri_MealPlans.xlsx",
+            mime="application/vnd.ms-excel",
+        )
+
 # def convert_df(df):
 #     # IMPORTANT: Cache the conversion to prevent computation on every rerun
 #     return df.to_csv(index=False).encode("utf-8")
 
 def main():
     st.title('Meal Plan Generator') # HumbleNutri App prototype
-    # # Initialize session state
-    # if 'submitted' in st.session_state.keys():
-    #     del st.session_state['submitted']
     # Input from the user
     with st.form("input_form"):
         gender_choice = st.selectbox('Gender', ['Male', 'Female'])
@@ -109,104 +148,72 @@ def main():
         all_bundles=list()
         lp_df = pd.DataFrame()
         # st.write(f"Finding optimal bundles...")
-        for t in range(5,26,5):
-            n = 3958 # Choose just 1 user to minimize confusion # get_user(user)
-            # Assume they are our target patient
-            with open(f'./final_target_items/bf_items_{n}_filtered_t{t}.pkl', 'rb') as x: bf = pickle.load(x)
-            with open(f'./final_target_items/app_items_{n}_wg_t{t}.pkl', 'rb') as x: wg = pickle.load(x)
-            with open(f'./final_target_items/app_items_{n}_vegie_t{t}.pkl', 'rb') as x: vg = pickle.load(x)
-            with open(f'./final_target_items/main_items_{n}_filtered_t{t}.pkl', 'rb') as x: main = pickle.load(x)
-            # Call the optimization function
-            bundles, _ = LP_MealBundle(bf_items = bf, wg_items = wg, vg_items = vg, main_items = main,
-                                        gender=gender_choice, height = height_choice, weight = weight_choice,
-                                        age = age_choice, after_surgery = after_surgery_choice, activity_level = activity_level_choice,
-                                        pre_diabetes = pre_diabetes_choice, high_cholesterol = high_cholesterol_choice,
-                                        hypertension = hypertension_choice)
-            all_bundles += bundles
-        # Format it in to lst then data frame
-        lp_lst = []
-        for i, d in enumerate(all_bundles):
-            for key, value in d.items():
-                if key != 'objective_value':
-                    lp_lst.append(('Daily Meals-'+str(i+1), key, *value))
-        # to df
-        lp_tmp = pd.DataFrame(lp_lst,columns=feature_lst)
-        # lp_tmp['patient_num'] = user
-        lp_df = pd.concat([lp_df,lp_tmp])
-        # st.write(lp_df)
-        # Write weekly plan 
-        st.header("Weekly Plan A", divider="blue")
-        # Bundles are already sorted by rec_score
-        try:
-            if sampling_key:
-                st.write(sampling_key)
-        except NameError:
-            sampling_key = 0
-        st.write(sampling_key)
-        # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
-        weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6, random_state=sampling_key))].reset_index(drop=True)
-        weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
-        schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
-                    'Monday': ['♻️ (Leftovers)'] * 6 ,
-                    'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-1']['title'])),
-                    'Thursday': ['♻️ (Leftovers)'] * 6,
-                    'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-2']['title'])),
-                    'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-3']['title']))}
-        first_week_df = pd.DataFrame(schedule)
-        # st.dataframe(first_week_df, hide_index = True)
-        st.table(first_week_df)
-        # st.write("* Bundles are sorted based on recommendation score")
-        # st.write("* Weekly plan A: First 3 bundles (Bundle-1, 2, 3) from the entire bundle set")
-        # Write weekly plan
-        st.header("Weekly Plan B", divider="green")
-        # Bundles are already sorted by rec_score
-        # second_week = lp_df[lp_df['bundle_num'].isin(['Bundle-4','Bundle-5','Bundle-6'])].reset_index(drop=True)
-        schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
-                    'Monday': ['♻️ (Leftovers)'] * 6 ,
-                    'Tuesday': ['♻️ (Leftovers)'] * 6,
-                    'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-4']['title'])),
-                    'Thursday': ['♻️ (Leftovers)'] * 6,
-                    'Friday': ['♻️ (Leftovers)'] * 6 ,
-                    'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-5']['title'])),
-                    'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-6']['title']))}
-        second_week_df=pd.DataFrame(schedule)
-        # st.dataframe(first_week_df, hide_index = True)
-        st.table(second_week_df)
+        with st.spinner("Finding optimal meal plans..."):
+            for t in range(5,26,5):
+                n = 3958 # Choose just 1 user to minimize confusion # get_user(user)
+                # Assume they are our target patient
+                with open(f'./final_target_items/bf_items_{n}_filtered_t{t}.pkl', 'rb') as x: bf = pickle.load(x)
+                with open(f'./final_target_items/app_items_{n}_wg_t{t}.pkl', 'rb') as x: wg = pickle.load(x)
+                with open(f'./final_target_items/app_items_{n}_vegie_t{t}.pkl', 'rb') as x: vg = pickle.load(x)
+                with open(f'./final_target_items/main_items_{n}_filtered_t{t}.pkl', 'rb') as x: main = pickle.load(x)
+                # Call the optimization function
+                bundles, _ = LP_MealBundle(bf_items = bf, wg_items = wg, vg_items = vg, main_items = main,
+                                            gender=gender_choice, height = height_choice, weight = weight_choice,
+                                            age = age_choice, after_surgery = after_surgery_choice, activity_level = activity_level_choice,
+                                            pre_diabetes = pre_diabetes_choice, high_cholesterol = high_cholesterol_choice,
+                                            hypertension = hypertension_choice)
+                all_bundles += bundles
+            # Format it in to lst then data frame
+            lp_lst = []
+            for i, d in enumerate(all_bundles):
+                for key, value in d.items():
+                    if key != 'objective_value':
+                        lp_lst.append(('Daily Meals-'+str(i+1), key, *value))
+            # to df
+            lp_tmp = pd.DataFrame(lp_lst,columns=feature_lst)
+            # lp_tmp['patient_num'] = user
+            lp_df = pd.concat([lp_df,lp_tmp])
+            # st.write(lp_df)
+            # Write weekly plan 
+            st.header("Weekly Plan A", divider="blue")
+            # Bundles are already sorted by rec_score
+            # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
+            weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6))].reset_index(drop=True)
+            weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
+            schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
+                        'Monday': ['♻️ (Leftovers)'] * 6 ,
+                        'Tuesday': ['♻️ (Leftovers)'] * 6,
+                        'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-1']['title'])),
+                        'Thursday': ['♻️ (Leftovers)'] * 6,
+                        'Friday': ['♻️ (Leftovers)'] * 6 ,
+                        'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-2']['title'])),
+                        'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-3']['title']))}
+            first_week_df = pd.DataFrame(schedule)
+            # st.dataframe(first_week_df, hide_index = True)
+            st.table(first_week_df)
+            # st.write("* Bundles are sorted based on recommendation score")
+            # st.write("* Weekly plan A: First 3 bundles (Bundle-1, 2, 3) from the entire bundle set")
+            # Write weekly plan
+            st.header("Weekly Plan B", divider="green")
+            # Bundles are already sorted by rec_score
+            # second_week = lp_df[lp_df['bundle_num'].isin(['Bundle-4','Bundle-5','Bundle-6'])].reset_index(drop=True)
+            schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
+                        'Monday': ['♻️ (Leftovers)'] * 6 ,
+                        'Tuesday': ['♻️ (Leftovers)'] * 6,
+                        'Wednesday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-4']['title'])),
+                        'Thursday': ['♻️ (Leftovers)'] * 6,
+                        'Friday': ['♻️ (Leftovers)'] * 6 ,
+                        'Saturday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-5']['title'])),
+                        'Sunday': change_order(list(weekly_plan[weekly_plan.meal_num=='Daily Meals-6']['title']))}
+            second_week_df=pd.DataFrame(schedule)
+            # st.dataframe(first_week_df, hide_index = True)
+            st.table(second_week_df)
         # st.write("* Weekly plans were randomly chosen from the recommended candidate bundles. Re-submit to explore different weekly plans, or download all candidate bundles below.")
         # st.write("* Nutrient constraints based on provided patient information is included in Sheet-2 of Excel files.")
-
-        st.download_button(
-            label="Download these weekly meal plans in Excel",
-            data=to_excel(weekly_plan, constraints_df),
-            file_name="HumbleNutri_MealPlans.xlsx",
-            mime="application/vnd.ms-excel"
-        )
+        download_file(weekly_plan, constraints_df)
         # Re submit
-        if st.button("Re-generate for different meal plan"):
+        if st.button("Re-Submit to get new plans"):
             st.session_state.submitted = True
-            sampling_key += 1
-
-
-
-    # # Download button for csv
-    # try:
-    #     st.download_button(
-    #         label="Download these weekly meal plans in Excel",
-    #         data=to_excel(weekly_plan, constraints_df),
-    #         file_name="HumbleNutri_MealPlans.xlsx",
-    #         mime="application/vnd.ms-excel"
-    #         )
-
-    #     st.download_button(
-    #         label="Download all bundles and patient constraints in Excel",
-    #         data=to_excel(lp_df, constraints_df),
-    #         file_name="HumbleNutri_Bundles.xlsx",
-    #         mime="application/vnd.ms-excel"
-    #         )
-    # except:
-    #     pass
     
 
 
