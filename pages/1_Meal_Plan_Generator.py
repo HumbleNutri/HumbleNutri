@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import random
 import pickle
 import io
 from utils import get_obesity_status, change_order # get_user
