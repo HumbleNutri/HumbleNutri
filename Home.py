@@ -16,7 +16,7 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
-st.write("healthy and culture-aware meal plan recommender system")
+st.write("## Healthy and Culture-aware Meal Plan Recommender System")
 st.write("")
 
 st.markdown(
