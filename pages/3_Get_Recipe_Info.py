@@ -23,7 +23,9 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
-
+# Initialize session state
+if 'submitted' in st.session_state.keys():
+    del st.session_state['submitted']
 # main meals # side dishes can be made in parallel to the main dishes
 main_meals = ['breakfast','lunch','dinner-main']
 nutrient_info = ['calories [cal]','totalCarbohydrate [g]','totalFat [g]','saturatedFat [g]', 'sugars [g]',  'sodium [mg]',
@@ -41,18 +43,19 @@ def main():
     # Input from the user
     try:
         with st.form("input_form"):
-            bundle_number = st.selectbox('Choose a Bundle', sorted(set(lp_df['bundle_num']), key=lambda x: int(x.split('-')[-1])))
+            meal_number = st.selectbox('Choose a Meal Bundle', sorted(set(lp_df['meal_num']), key=lambda x: int(x.split('-')[-1])))
             meal_choice = st.selectbox('Choose a Meal', ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"])
             ### Submit
             submitted = st.form_submit_button("Submit")
-        # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
-        if submitted:
-            st.session_state.submitted = True
+        # # Stay showing the health result and weekly agenda # Bug: reruns automatically when switching pages
+        # if submitted:
+        #     st.session_state.submitted = True
 
-        # Run LP and show result
-        if "submitted" in st.session_state:
+        # # Run LP and show result
+        # if "submitted" in st.session_state:
+        if submitted:
             # Chosen bundle, meal
-            bundle_df = lp_df[lp_df['bundle_num']==bundle_number].reset_index(drop=True)
+            bundle_df = lp_df[lp_df['meal_num']==meal_number].reset_index(drop=True)
             meal_df = bundle_df[bundle_df['meal_type']==get_(meal_choice)].reset_index(drop=True)
             # List meal name, ingredients, and recipe
             st.header(f"{meal_df['title'][0]}", divider="red")
