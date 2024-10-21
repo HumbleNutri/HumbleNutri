@@ -93,36 +93,39 @@ st.markdown(
     """
 )
 
-st.image("./images/AH.jpg", caption="PI: Abigail Horn, PhD                                                        ")
-st.markdown("""
+col1, col2 = st.columns(2)
+
+col1.image("./images/AH.jpg", caption="PI: Abigail Horn, PhD                                                        ")
+col1.markdown("""
               Research Assistant Professor, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
               Co-Director, ISI AI4Health Center <br />
               - Overseeing project, ensuring algorithm meets clinical and cultural needs
               """, unsafe_allow_html=True)
-st.image("./images/SK.jpg", caption="Co-I: Susan Kim, MS, RDN, CCTD")
-st.markdown("""
+col1.image("./images/SK.jpg", caption="Co-I: Susan Kim, MS, RDN, CCTD")
+col1.markdown("""
               Dietician, Program Manager, <br />
               Abdominal Organ Transplant Program, <br />
               USC Transplant Institute, <br />
               Keck Medicine of USC <br />
               - Overseeing incorporation of clinical nutrition equations, patient needs
               """, unsafe_allow_html=True)
-st.image("./images/KB.jpg", caption="Co-I: Keith Burghardt, PhD")
-st.markdown("""
+col1.image("./images/KB.jpg", caption="Co-I: Keith Burghardt, PhD")
+col1.markdown("""
               Research Computer Scientist, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
               - Advising development of algorithm, data science
               """, unsafe_allow_html=True)
-st.image("./images/AS.jpg", caption="Co-I: Alex DongHyeon Seo, MS")
-st.markdown("""
+col1.image("./images/AS.jpg", caption="Co-I: Alex DongHyeon Seo, MS")
+col1.markdown("""
               Machine Learning Engineer, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
               - Developed algorithm, leading data science, app development
               """, unsafe_allow_html=True)
+
 
 # Initialize session state
 if 'submitted' in st.session_state.keys():
