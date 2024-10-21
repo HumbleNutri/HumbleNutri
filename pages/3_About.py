@@ -89,7 +89,7 @@ st.text("")
 
 st.markdown(
     """
-        ### Meet the team
+        ### :star: Meet the team :star:
     """
 )
 
