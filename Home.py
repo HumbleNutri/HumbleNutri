@@ -94,7 +94,7 @@ def main():
     # Input from the user
     with st.form("input_form"):
         gender_choice = st.selectbox('Gender', ['Male', 'Female'])
-        height_choice = st.number_input('Height (inch)', min_value=60.0, step=0.1) # min_value=150.0, max_value=250.0, 
+        height_choice = st.number_input('Height (inch)', min_value=60.0, step=0.1, help = "5 feet = 60 inch") # min_value=150.0, max_value=250.0, 
         weight_choice = st.number_input('Weight (lbs)', min_value=90.0, step=0.1)  # min_value=35.0, max_value=300.0,
         age_choice = st.number_input('Age', min_value=18, max_value=100, step=1)
         after_surgery_choice = st.radio('Post-Surgery Recovery Phase', [True, False])
