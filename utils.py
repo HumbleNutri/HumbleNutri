@@ -1,5 +1,17 @@
 import re
 
+def imperial2metric(ht, wt):
+    new_ht = ht * 2.54
+    new_wt = wt * 0.453592
+
+    return new_ht, new_wt
+
+def metric2imperial(ht, wt):
+    new_ht = ht * 0.393701
+    new_wt = wt * 2.20462
+
+    return new_ht, new_wt
+
 def round_up_numbers_in_string(input_str):
     # Define a regular expression pattern to match numbers with more than 2 decimal places
     pattern = r'\d+\.\d{3,}'
