@@ -93,10 +93,10 @@ st.markdown(
     """
 )
 
-col1, col2 = st.columns(2)
+col1, _ = st.columns(2)
 
 col1.image("./images/AH.jpg", caption="PI: Abigail Horn, PhD                                                        ")
-col2.markdown("""
+col1.markdown("""
               Research Assistant Professor, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
@@ -104,7 +104,7 @@ col2.markdown("""
               - Overseeing project, ensuring algorithm meets clinical and cultural needs
               """, unsafe_allow_html=True)
 col1.image("./images/SK.jpg", caption="Co-I: Susan Kim, MS, RDN, CCTD")
-col2.markdown("""
+col1.markdown("""
               Dietician, Program Manager, <br />
               Abdominal Organ Transplant Program, <br />
               USC Transplant Institute, <br />
@@ -112,14 +112,14 @@ col2.markdown("""
               - Overseeing incorporation of clinical nutrition equations, patient needs
               """, unsafe_allow_html=True)
 col1.image("./images/KB.jpg", caption="Co-I: Keith Burghardt, PhD")
-col2.markdown("""
+col1.markdown("""
               Research Computer Scientist, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
               - Advising development of algorithm, data science
               """, unsafe_allow_html=True)
 col1.image("./images/AS.jpg", caption="Co-I: Alex DongHyeon Seo, MS")
-col2.markdown("""
+col1.markdown("""
               Machine Learning Engineer, <br />
               Information Sciences Institute (ISI), <br />
               Viterbi School of Engineering <br />
