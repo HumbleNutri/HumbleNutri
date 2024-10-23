@@ -22,6 +22,8 @@ st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
 st.sidebar.text("©️Information Sciences Institute 2024")
 
+st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
+
 # Initialize session state
 if 'submitted' in st.session_state.keys():
     del st.session_state['submitted']

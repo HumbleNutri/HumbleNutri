@@ -56,6 +56,8 @@ st.sidebar.text("©️Information Sciences Institute 2024")
 #                 """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
+
 feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
                'direction_size','ingredients_sizes',
                'average_rating', 'number_of_ratings',
