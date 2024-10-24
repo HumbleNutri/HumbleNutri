@@ -19,7 +19,7 @@ st.sidebar.text("©️Information Sciences Institute 2024")
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
 st.markdown("## Healthy and Culture-aware Meal Plan Recommender System")
-st.write("")
+st.text("")
 
 st.markdown(
     """ 
@@ -29,7 +29,7 @@ st.markdown(
     """
 )
 
-st.write("")
+st.text("")
 
 st.markdown(
         """
@@ -43,10 +43,10 @@ st.markdown(
     	"""
     )
 
-st.text("")
 
 st.markdown("Towards this aim, we present")
 st.markdown("<u>\"*HUMBLE-NUTRI: **H**ealthy and c**U**lture-aware **M**eal **B**und**LE** recommendation with **NUTRI**tionist feedback*\"</u>.", unsafe_allow_html=True)
+st.text("")
 st.text("")
 st.markdown("##### **Meal Structure**", unsafe_allow_html=True)
 st.markdown(
