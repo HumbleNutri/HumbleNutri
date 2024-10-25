@@ -98,7 +98,7 @@ st.markdown(
             This is achieved using an objective function that maximizes the recommendation score from the recommender system model while adhering to nutritional constraints defined by our Dietitian Nutritionist. \
                 The set of nutritional constraints for any patient is automatically computed by the app based on the information input by the medical provider on each patient’s clinical factors (sex, age, weight, height, and whether they have certain health conditions or are recovering from surgery). \
                     These constraints define an individual’s daily macro and micronutrient needs. The linear programming model aims to identify combinations of recipes that taken together meet these daily nutrient needs, while also meeting a high score for meals that follow their dietary preferences. \
-                    The full set of nutritional equations the constraints are based on are summarized in this linked [document](https://docs.google.com/document/d/12w9B8cionp8PxD6zfMDzp7uv377Dk4BwlfZGY-NVYEg/edit). Details of this approach are also forthcoming in our paper.
+                    The full set of nutritional equations the constraints are based on are summarized in this [linked document](https://docs.google.com/document/d/12w9B8cionp8PxD6zfMDzp7uv377Dk4BwlfZGY-NVYEg/edit). Details of this approach are also forthcoming in our paper.
     """, unsafe_allow_html=True
 )
 
