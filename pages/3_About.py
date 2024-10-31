@@ -20,6 +20,7 @@ st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>"
 
 st.markdown("## Healthy and Culture-aware Meal Plan Recommender System")
 st.text("")
+st.markdown("##### :point_right: [Watch this demo video on HumbleNutri App!](https://usc.zoom.us/rec/play/NVIv-EuU7pqjD9MqWuiAWzjFfZdxqaZyD_UsaNKYkvCWZPcInDnKKBhphBxlqWQLwSHrdOZF3swWHA.DSo3HjOotbGePO5G?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fusc.zoom.us%2Frec%2Fshare%2F878mHepbC-lHYu1jdXcMOchpCxRw_7Nfn-6n-NMdjvsegyNftrLew0m_PUR4f-63.G-n2Bri3hQmDxPsW)")
 
 st.markdown(
     """ 
