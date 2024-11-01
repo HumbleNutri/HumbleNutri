@@ -21,7 +21,7 @@ st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>"
 st.markdown("## Healthy and Culture-aware Meal Plan Recommender System")
 st.text("")
 st.markdown("##### :point_right: [Watch this demo video on HumbleNutri App!](https://usc.zoom.us/rec/play/NVIv-EuU7pqjD9MqWuiAWzjFfZdxqaZyD_UsaNKYkvCWZPcInDnKKBhphBxlqWQLwSHrdOZF3swWHA.DSo3HjOotbGePO5G?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fusc.zoom.us%2Frec%2Fshare%2F878mHepbC-lHYu1jdXcMOchpCxRw_7Nfn-6n-NMdjvsegyNftrLew0m_PUR4f-63.G-n2Bri3hQmDxPsW)")
-
+st.markdown("##### :point_right: [Watch this overview video on HumbleNutri Model and App!](https://usc.zoom.us/rec/play/2v_FRCemBm7TX3Huwh3UQZnfnfaq2rJQkoRi_e_8CtRvD37mFQ9DozMaqHZg2y4NidpHjxW9rKZMrUeD.GZc7q68YFSPRZj1h?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fusc.zoom.us%2Frec%2Fshare%2FrgSh89iGg5QcVZuNVLkjV9BMiN94VJDjZsmEkjzwIBxyUutnKf3s3fdXVvhbioNd.X4XlYT7mqJ7zSVZE)")
 st.markdown(
     """ 
         > Welcome to HumbleNutri App! 👋 We are research scientists and engineers from USC's Information Sciences Institute, \
