@@ -54,6 +54,15 @@ def LP_MealBundle(bf_items, wg_items, vg_items, main_items, gender, height, weig
                               wg_items if meal_type == 'dinner-side-wg' else
                               vg_items if meal_type == 'dinner-side-vg' else
                               main_items)]) <= calorie_needs
+    
+    # Calorie constraint (maximum 2250 calories for all meals)
+    prob += sum([item_choices[meal_type, item[0]] * item[11] for meal_type in ['breakfast', 'lunch-side','lunch', 'dinner-side-wg', 'dinner-side-vg', 'dinner-main']
+                 for item in (bf_items if meal_type == 'breakfast' else
+                              vg_items if meal_type == 'lunch-side' else
+                              main_items if meal_type == 'lunch' else
+                              wg_items if meal_type == 'dinner-side-wg' else
+                              vg_items if meal_type == 'dinner-side-vg' else
+                              main_items)]) >= calorie_needs * 0.75
 
     # Carbohydrate constraint 
     # Get amount per patient as % of overall calories: should be 50-60% # 4 cal / 1 g carbohydrate
