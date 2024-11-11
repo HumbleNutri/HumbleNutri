@@ -80,7 +80,9 @@ def main():
                                                           "dietaryFiber [g]":"dietary fiber [g]"}), hide_index = True, use_container_width = True)
             # Show bar plots
             daily_values = constraints_df['Amount'].str.extract('(\d+)')[0].astype(int).tolist()
-            # remove protien constraint upper
+            # remove calories constraint lower
+            daily_values.pop(0)
+            # remove protein constraint upper
             daily_values.pop(-2)
             # nutirent names
             show_nutrients = key_info[4:]
