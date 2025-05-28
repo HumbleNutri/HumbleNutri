@@ -21,7 +21,7 @@ st.set_page_config(
 st.sidebar.text("")
 st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
-st.sidebar.text("©️Information Sciences Institute 2024")
+#
 
 # hide_streamlit_style = """
 #                 <style>
@@ -78,7 +78,7 @@ def to_excel(df1, df2):
         worksheet2 = writer.sheets['Sheet2']
     return output.getvalue()
 
-@st.experimental_fragment
+@st.fragment #@st.experimental_fragment
 def download_file(df1, df2):
     st.download_button(
             label="Download these weekly meal plans in Excel",

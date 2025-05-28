@@ -21,7 +21,7 @@ st.set_page_config(
 st.sidebar.text("")
 st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
-st.sidebar.text("©️Information Sciences Institute 2024")
+#
 
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 

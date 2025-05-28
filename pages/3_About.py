@@ -14,14 +14,12 @@ st.set_page_config(
 st.sidebar.text("")
 st.sidebar.success("👆️ Select an option above")
 st.sidebar.text("")
-st.sidebar.text("©️Information Sciences Institute 2024")
+#
 
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
-st.markdown("## Healthy and Culture-aware Meal Plan Recommender System")
+st.markdown("## Healthy and Culturally-tailored Meal Plan Recommender System")
 st.text("")
-st.markdown("##### :point_right: [Watch this demo video on HumbleNutri App!](https://usc.zoom.us/rec/play/NVIv-EuU7pqjD9MqWuiAWzjFfZdxqaZyD_UsaNKYkvCWZPcInDnKKBhphBxlqWQLwSHrdOZF3swWHA.DSo3HjOotbGePO5G?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fusc.zoom.us%2Frec%2Fshare%2F878mHepbC-lHYu1jdXcMOchpCxRw_7Nfn-6n-NMdjvsegyNftrLew0m_PUR4f-63.G-n2Bri3hQmDxPsW)")
-st.markdown("##### :point_right: [Watch this overview video on HumbleNutri Model and App!](https://usc.zoom.us/rec/play/2v_FRCemBm7TX3Huwh3UQZnfnfaq2rJQkoRi_e_8CtRvD37mFQ9DozMaqHZg2y4NidpHjxW9rKZMrUeD.GZc7q68YFSPRZj1h?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fusc.zoom.us%2Frec%2Fshare%2FrgSh89iGg5QcVZuNVLkjV9BMiN94VJDjZsmEkjzwIBxyUutnKf3s3fdXVvhbioNd.X4XlYT7mqJ7zSVZE)")
 st.markdown(
     """ 
         > Welcome to HumbleNutri App! 👋 We are research scientists and engineers from USC's Information Sciences Institute, \
@@ -123,45 +121,6 @@ st.markdown(
 
 st.text("")
 st.text("")
-
-st.markdown(
-    """
-        ### :star: Meet the team :star:
-    """
-)
-
-col1, _ = st.columns(2)
-
-col1.image("./images/AH.jpg", caption="PI: Abigail Horn, PhD                                                        ")
-col1.markdown("""
-              Research Assistant Professor, <br />
-              Information Sciences Institute (ISI), <br />
-              Viterbi School of Engineering <br />
-              Co-Director, ISI AI4Health Center <br />
-              - Overseeing project, ensuring algorithm meets clinical and cultural needs
-              """, unsafe_allow_html=True)
-col1.image("./images/SK.jpg", caption="Co-I: Susan Kim, MS, RDN, CCTD")
-col1.markdown("""
-              Dietician, Program Manager, <br />
-              Abdominal Organ Transplant Program, <br />
-              USC Transplant Institute, <br />
-              Keck Medicine of USC <br />
-              - Overseeing incorporation of clinical nutrition equations, patient needs
-              """, unsafe_allow_html=True)
-col1.image("./images/KB.jpg", caption="Co-I: Keith Burghardt, PhD")
-col1.markdown("""
-              Research Computer Scientist, <br />
-              Information Sciences Institute (ISI), <br />
-              Viterbi School of Engineering <br />
-              - Advising development of algorithm, data science
-              """, unsafe_allow_html=True)
-col1.image("./images/AS.jpg", caption="Co-I: Alex DongHyeon Seo, MS")
-col1.markdown("""
-              Machine Learning Engineer, <br />
-              Information Sciences Institute (ISI), <br />
-              Viterbi School of Engineering <br />
-              - Developed algorithm, leading data science, app development
-              """, unsafe_allow_html=True)
 
 
 # Initialize session state
