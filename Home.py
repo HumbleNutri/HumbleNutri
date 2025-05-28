@@ -150,7 +150,7 @@ def main():
         # st.write(f"Finding optimal bundles...")
         with st.spinner("Finding optimal meal plans..."):
             for t in range(5,26,5):
-                n = 3958 # Choose just 1 user to minimize confusion # get_user(user)
+                n = 3958 # Choose just 1 user for showcase # get_user(user)
                 # Assume they are our target patient
                 with open(f'./final_target_items/bf_items_{n}_filtered_t{t}.pkl', 'rb') as x: bf = pickle.load(x)
                 with open(f'./final_target_items/app_items_{n}_wg_t{t}.pkl', 'rb') as x: wg = pickle.load(x)
