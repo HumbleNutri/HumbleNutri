@@ -32,7 +32,7 @@ st.text("")
 st.markdown(
     """ 
         > How to use:
-        > Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan.<a href="#note1" id="note1ref"><sup>1</sup></a> No information will be saved.
+        > Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan.<a href="#note1" id="note1ref"><sup>1</sup></a> No information will be saved on this app.
         > Download an Excel file with the personalized meal plan, and upload the Excel file at the `Get Meal Plan Info` and `Get Recipe Info` pages to get detailed statistical visualization as well as descriptions about the meals and recipes on the dashboard.
     """
 )
@@ -69,7 +69,7 @@ st.markdown("##### **Inputs**", unsafe_allow_html=True)
 st.markdown(
         """
             - The clinical factors for the user/patient (who the recommended meal plans are generated for). These include sex, age, weight, height, and whether they have certain health conditions or are recovering from surgery). These should be input by the patient’s nutritionist/medical provider.
-            - Information on the types of cuisines and foods a user likes, and user's rating on a set of 10-15 example meals (matching their preferred cuisine) for a warm-start recommendation.<a href="#note1" id="note1ref"><sup>2</sup></a>
+            - Information on the types of cuisines and foods a user likes, and user's rating on a set of 10-15 example meals (matching their preferred cuisine) for a warm-start recommendation.<a href="#note1" id="note1ref"><sup>1</sup></a>
     	""", unsafe_allow_html=True
     )
 st.markdown("##### **Data**", unsafe_allow_html=True)
@@ -113,7 +113,8 @@ st.text("")
 st.markdown(
     """
         <a id="note1" href="#note1ref"><sup>1</sup></a> In this showcase app, example perference profile will be used instead of the warm-start to generate the meal plans.
-        <a id="note1" href="#note1ref"><sup>2</sup></a>HUMMUS Dataset: Bölz, Felix, et al. "HUMMUS: A Linked, Healthiness-Aware, User-centered and Argument-Enabling Recipe Data Set for Recommendation." Proceedings of the 17th ACM Conference on Recommender Systems, 2023.
+
+       <a id="note1" href="#note1ref"><sup>2</sup></a>HUMMUS Dataset: Bölz, Felix, et al. "HUMMUS: A Linked, Healthiness-Aware, User-centered and Argument-Enabling Recipe Data Set for Recommendation." Proceedings of the 17th ACM Conference on Recommender Systems, 2023.
     """, unsafe_allow_html=True
 )
 
