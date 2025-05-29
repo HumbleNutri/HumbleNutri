@@ -56,6 +56,20 @@ st.sidebar.text("")
 #                 """
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+# Hide GitHub
+st.markdown(
+    """
+    <style>
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_, .viewerBadge_link__1S137,
+    .viewerBadge_text__1JaDK {
+        display: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
 feature_lst = ['meal_num','meal_type','title', 'description','duration', 'directions','ingredients',
