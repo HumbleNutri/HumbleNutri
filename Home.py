@@ -58,7 +58,7 @@ st.sidebar.text("")
 
 # Hide GitHub
 hide_github_icon = """
-#GithubIcon {
+#MainMenu {
   visibility: hidden;
 }
 """

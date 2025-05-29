@@ -31,8 +31,10 @@ st.text("")
 
 st.markdown(
     """ 
-        > How to use:
-        > Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan.<a href="#note1" id="note1ref"><sup>1</sup></a> No information will be saved on this app.
+        > **How to use:**
+
+        > Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan. No information will be saved on this app.
+       
         > Download an Excel file with the personalized meal plan, and upload the Excel file at the `Get Meal Plan Info` and `Get Recipe Info` pages to get detailed statistical visualization as well as descriptions about the meals and recipes on the dashboard.
     """
 )
@@ -101,7 +103,7 @@ st.markdown(
 st.markdown("> **Nutritional Constraint Model**", unsafe_allow_html=True)
 st.markdown(
     """
-        > We then apply a integer linear programming model that is designed to meet a patient’s clinical nutritional needs while identifying recipes that are most closely aligned with their cuisine preferences. \
+        We then apply a integer linear programming model that is designed to meet a patient’s clinical nutritional needs while identifying recipes that are most closely aligned with their cuisine preferences. \
             This is achieved using an objective function that maximizes the recommendation score from the recommender system model while adhering to nutritional constraints defined by our RDN. \
                 The set of nutritional constraints for patient is computed based on the information input by the patient’s nutritionist/medical provider on each patient’s clinical factors (sex, age, weight, height, and whether they have certain health conditions or are recovering from surgery)(See link above). \
                     These constraints define an individual’s daily macro and micronutrient needs. The linear programming model aims to identify combinations of recipes that taken together meet these daily nutrient needs, while also meeting a high score for meals that align with their dietary preferences. \
