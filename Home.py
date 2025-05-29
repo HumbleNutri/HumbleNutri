@@ -57,12 +57,12 @@ st.sidebar.text("")
 # st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Hide GitHub
-hide_github_icon = """
-#MainMenu {
-  visibility: hidden;
-}
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+# hide_github_icon = """
+# #GithubIcon {
+#   visibility: hidden;
+# }
+# """
+# st.markdown(hide_github_icon, unsafe_allow_html=True)
 
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
