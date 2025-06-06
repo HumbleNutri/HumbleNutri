@@ -1,1 +1,16 @@
-HumbleNutri
+# Personalized and Culturally-Tailored Meal Planning Recommendation for Clinical Nutrition
+
+Meal prescription interventions are essential for managing patients' dietary needs, yet existing approaches either require manual meal planning or rely on generic apps that lack cultural customization. We introduce HumbleNutri, a meal prescription plan recommender system that generates personalized, culturally tailored meal plans for patients with specific dietary needs under the guidance of a Registered Dietitian Nutritionist (RDN). HumbleNutri begins with a semi-supervised learning step to categorize recipes by meal type and cuisine, enabling culturally informed recommendations, with a focus on Latin American cuisines in this application. The system employs a modular framework that combines collaborative filtering-based recommenders with a bundle optimization model with constraints, suggesting meals that are aligned with patient preferences and RDN guidelines while ensuring that meal combinations satisfy patient-specific nutritional requirements based on their clinical profiles. Meals are organized into daily bundles (breakfast, lunch, dinner) and sequenced into weekly plans that support practical preparation and adherence to clinical nutrition targets. HumbleNutri translates clinical diet guidelines into culturally relevant meal plans, offering a scalable and equitable platform to deliver precision nutrition with an open source toolkit and web application.
+
+> ## Overview.
+
+HumbleNutri is a multimodule system that generates culturally tailored and clinically personalized meal recommendations for patients, guided by clinical nutrition principles and cultural relevance. The system works through the integration of four modules: (1) a semi-supervised learning method to infer cuisine and meal type labels at scale to identify culturally relevant recipes; (2) collaborative filtering for recipe recommendation, (3) a “recipe alignment” step to reflect nutritionist-specified constraints on ingredients and preparation methods, and (4) a structured optimization framework to generate personalized weekly meal bundles. Figure below illustrates an overview of the HumbleNutri system with the recommended weekly meal bundle structure. Following the guidance of the Registered Dietitian Nutritionist (RDN), these modules are integrated to produce daily meal bundles structured into breakfast, lunch consisting of main dish and 1 side dish (vegetables) and dinner consisting of main-dish and 2 side-dishes (vegetables and whole grains).
+
+![HN_diagram](https://github.com/HumbleNutri/HumbleNutri/blob/main/images/HN_model.png)
+
+**Illustration of the overview of HumbleNutri.** The system takes recipe names as input and outputs a weekly plan of clinically personalized and culturally-tailored meals. 1) Recipe self-labels via semi-supervised fully-connected network (FCN), 2) then generates candidate recipes with meal type-specific recommenders. 3) RDN aligns the recipe for patient populations, 4) then optimization via linear programming allows us to generate personalized meal bundles.
+
+> Additional materials:
+- [`Web application`](https://humblenutri.streamlit.app/)
+- [`RDN-defined constraints (nutrients, ingredients, and preparation) document`](https://docs.google.com/document/d/12w9B8cionp8PxD6zfMDzp7uv377Dk4BwlfZGY-NVYEg/edit?tab=t.0) 
+

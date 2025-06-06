@@ -18,11 +18,11 @@ st.sidebar.text("")
 
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
-st.markdown("## Healthy and Culturally-tailored Meal Plan Recommender System")
+st.markdown("## Personalized and Culturally-Tailored Meal Planning Recommendation for Clinical Nutrition")
 st.text("")
 st.markdown(
     """ 
-        > Welcome to HumbleNutri App! 👋 This app contains a showcase of meal prescription recommender systems designed for nutritionists helping patients with dietary requirements. This synergistic systems with integrated modules are designed through the guidance \
+        > Welcome to HUMBLE-NUTRI: **H**ealthy and c**U**lturally-tailored **M**eal **B**und**LE** recommendation with **NUTRI**tionist guidance App! 👋 This app contains a showcase of meal prescription recommender systems designed for nutritionists helping patients with dietary requirements. This synergistic systems with integrated modules are designed through the guidance \
                 of a Registered Dietitian Nutritionist (RDN) specializing in organ donors.
     """
 )
@@ -33,29 +33,29 @@ st.markdown(
     """ 
         > **How to use:**
 
-        > Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan. No information will be saved on this app.
+        - Start at `Home`. Input the clinical information needed to generate a personalized meal prescription plan. No information will be saved on this app.
        
-        > Download an Excel file with the personalized meal plan, and upload the Excel file at the `Get Meal Plan Info` and `Get Recipe Info` pages to get detailed statistical visualization as well as descriptions about the meals and recipes on the dashboard.
+        - Download an Excel file with the personalized meal plan, and upload the Excel file at the `Get Meal Plan Info` and `Get Recipe Info` pages to get detailed statistical visualization as well as descriptions about the meals and recipes on the dashboard.
     """
 )
 
-st.text("")
+# st.text("")
 
-st.markdown(
-        """
-            To date, clinicians have implemented interventions in patient populations by either manually \
-                designing meal plans (a burdensome and unscalable approach), or employing off-the-shelf meal planning applications (apps).\
-                Existing apps on the market suffer a major limitation: while they account for dietary constraints, their meal recommendations\
-                focus on Western-normative diets, and their approaches do not offer customization to other sociocultural dietary patterns (e.g., Hispanic foods).\
-                This represents a major gap given that:
-            - Populations commonly targeted in meal prescription interventions are of racial/ethnic minorities and may not have Western normative diets.
-            - Extensive evidence from dietary interventions has established that dietary changes are sustainably maintained and lead to nutritional benefits only if the intervention works around individuals\' existing diets.
-    	"""
-    )
+# st.markdown(
+#         """
+#             To date, clinicians have implemented interventions in patient populations by either manually \
+#                 designing meal plans (a burdensome and unscalable approach), or employing off-the-shelf meal planning applications (apps).\
+#                 Existing apps on the market suffer a major limitation: while they account for dietary constraints, their meal recommendations\
+#                 focus on Western-normative diets, and their approaches do not offer customization to other sociocultural dietary patterns (e.g., Hispanic foods).\
+#                 This represents a major gap given that:
+#             - Populations commonly targeted in meal prescription interventions are of racial/ethnic minorities and may not have Western normative diets.
+#             - Extensive evidence from dietary interventions has established that dietary changes are sustainably maintained and lead to nutritional benefits only if the intervention works around individuals\' existing diets.
+#     	"""
+#     )
 
 
-st.markdown("Towards this aim, we present")
-st.markdown("<u>\"*HUMBLE-NUTRI: **H**ealthy and c**U**lturally-tailored **M**eal **B**und**LE** recommendation with **NUTRI**tionist guidance*\"</u>.", unsafe_allow_html=True)
+# st.markdown("Towards this aim, we present")
+# st.markdown("<u>\"*HUMBLE-NUTRI: **H**ealthy and c**U**lturally-tailored **M**eal **B**und**LE** recommendation with **NUTRI**tionist guidance*\"</u>.", unsafe_allow_html=True)
 st.text("")
 st.text("")
 st.markdown("##### **Meal Structure**", unsafe_allow_html=True)

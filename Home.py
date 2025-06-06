@@ -112,7 +112,6 @@ def main():
         pre_diabetes_choice = st.radio('Pre-Diabetes', [True, False])
         high_cholesterol_choice = st.radio('High Cholesterol', [True, False])
         hypertension_choice = st.radio('Hypertension', [True, False])
-        # user = st.radio('User', ['User-1', 'User-2', 'User-3', 'User-4', 'User-5',])
         ### Submit
         submitted = st.form_submit_button("Submit")
 
@@ -158,7 +157,7 @@ def main():
         # st.write(f"Finding optimal bundles...")
         with st.spinner("Finding optimal meal plans..."):
             for t in range(5,26,5):
-                n = 3958 # Choose just 1 user for showcase # get_user(user)
+                n = 3958 # Choose user for showcase # get_user(user)
                 # Assume they are our target patient
                 with open(f'./final_target_items/bf_items_{n}_filtered_t{t}.pkl', 'rb') as x: bf = pickle.load(x)
                 with open(f'./final_target_items/app_items_{n}_wg_t{t}.pkl', 'rb') as x: wg = pickle.load(x)
@@ -185,7 +184,6 @@ def main():
             # Write weekly plan 
             st.header("Weekly Plan A", divider="blue")
             # Bundles are already sorted by rec_score
-            # first_week = lp_df[lp_df['bundle_num'].isin(['Bundle-1','Bundle-2','Bundle-3'])]
             weekly_plan = lp_df[lp_df['meal_num'].isin(pd.Series(lp_df['meal_num'].unique()).sample(n=6))].reset_index(drop=True)
             weekly_plan['meal_num'] = [f'Daily Meals-{i}' for i in range(1, 7) for _ in range(6)]
             schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
@@ -204,7 +202,6 @@ def main():
             # Write weekly plan
             st.header("Weekly Plan B", divider="green")
             # Bundles are already sorted by rec_score
-            # second_week = lp_df[lp_df['bundle_num'].isin(['Bundle-4','Bundle-5','Bundle-6'])].reset_index(drop=True)
             schedule = {'Meal': ["Breakfast", "Lunch", "Lunch-Side", "Dinner-Main","Dinner-Side (whole-grains)","Dinner-Side (vegetables)"],
                         'Monday': ['♻️ (Leftovers)'] * 6 ,
                         'Tuesday': ['♻️ (Leftovers)'] * 6,
