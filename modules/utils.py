@@ -79,3 +79,41 @@ def set_gt(df, X, cls_target):
     y_train = pd.concat([y_target ,y_Notarget_matched]).reset_index(drop=True)
 
     return X_unlabeled, y_unlabeled, X_train, y_train
+
+def duplicate_recipes(df):
+    # Remove duplicate recipes
+    df = df.drop_duplicates(subset=['new_recipe_id']).reset_index(drop=True)
+
+    return df
+
+def initial_filter(df):
+    # Filter out recipes with lowest nutri score
+    df = df[df['nutri_score']!=0].reset_index(drop=True) 
+
+    return df
+
+def get_reviews(df, reviews):
+    df_reviews = reviews[reviews['new_recipe_id'].isin(list(set(df['new_recipe_id'])))].reset_index(drop=True)
+     # Build feature matrix for whole latam bf
+    pp_interactions = df_reviews[['new_member_id', 'new_recipe_id', 'rating']]
+    pp_interactions = pp_interactions.rename(columns={'new_member_id': 'userID', 'new_recipe_id': 'itemID'})
+
+    return pp_interactions
+
+def hummus_remove_outliers(df, column_names):
+    # Post-processing method from HUMMUS paper
+    data = pd.DataFrame(df)
+
+    for column_name in column_names:
+        q1 = np.percentile(data[column_name], 25)
+        q3 = np.percentile(data[column_name], 75)
+        iqr = q3 - q1
+        upper = q3 + 1.5 * iqr
+        lower = q1 - 1.5 * iqr
+
+        length_before = len(data)
+        data = data.drop((data[data[column_name] >= upper].index | data[data[column_name] <= lower].index), axis=0)
+
+        print('Removed ' + str(length_before - len(data)) + ' outliers of ' + column_name + '.')
+
+    return data
