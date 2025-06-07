@@ -2,7 +2,7 @@ PuLP==2.8.0
 openpyxl
 xlsxwriter
 plotly
-torch
-tensorflow
-cornac==1.15.4
-recommenders==1.2.0
+# torch
+# tensorflow
+# cornac==1.15.4
+# recommenders==1.2.0
