@@ -117,3 +117,55 @@ def hummus_remove_outliers(df, column_names):
         print('Removed ' + str(length_before - len(data)) + ' outliers of ' + column_name + '.')
 
     return data
+
+def get_keywords(meal_type):
+    # RDN-defined keywords
+    bf_categories = {
+    "healthy_ingredients": ["oatmeal", "wholegrain", "whole wheat", "berries", "nuts", "seeds", "avocado", "egg",
+        "yogurt", "quinoa", "chia", "flaxseed", "spinach", "kale", "broccoli", "sweet potato", "oat", "grain", "buckwheat",
+        "salmon", "tuna", "chicken breast", "turkey", "tofu", "tempeh", "lentils", "beans",
+       "chickpeas", "olive oil", "almond milk", "soy milk", 'breakfast bars',
+        "cucumber", "tomato", "bell pepper", "carrot", "zucchini", "asparagus", "brussels sprouts",
+        "ginger", "turmeric", "almonds", "walnuts", "hazlenuts", "pecans", "sesame seeds", "peanuts",
+        "pumpkin seeds", "sunflower seeds", "Greek yogurt", "cottage cheese",
+        "mushrooms", "apples", "bananas", "oranges", "strawberries", "blueberries", "raspberries",
+        "blackberries", "plums", "prunes", "apricots", "peach", "nectarines", "banana"],
+    "healthy_preparation": ["steamed", "boiled", "baked", "grilled", "roasted", "raw", "toast", "sauteed", "puree","mixed", "blended","healthy","fermented", "simmered", "slow cooked"],
+    # no meat for bf
+    "unhealthy_ingredients": ["sugar", "syrup", "chocolate", "cream", "creamy", "bacon", "margarine", "shortening", "lard", "mayonnaise", "ranch", "thousand island", "sour cream",
+                             "beef", "pork", "chicken", "turkey", "lamb", "duck", "ground", "steak", "leg", "shoulder", "belly", "breast", "skirt", "shank", "loin", "bone", "ham", "veal", "cutlet", "brisket", "meat", "ribs", "flank", "burger", "slider", "hot dog", "sausage", "hamburger", "BBQ", "barbecue"],
+    "unhealthy_preparation": ["fried", "deep fried", "candied", "battered", "sweetened","fries", "fry", "frying", "deep fry", "deep frying", "candy", "candying", "batter", "battering", "dredge", "dredging", "dredged"]
+    }
+    # Define categories and their associated keywords
+    wg_categories = {
+        "healthy_ingredients": ["wholegrain", "whole wheat", "nuts", "seeds", "quinoa",
+                                "potato", "sweet potato", "grain","tofu", "tempeh", "lentils", "beans","chickpeas",
+                                "brown rice", "farro", "couscous", "bulgar", "barley", "wheat berries", "spelt", "buckwheat"],
+        "healthy_preparation": ["steamed", "boiled", "baked", "grilled", "roasted", "raw", "toast", "sauteed", "puree","mixed", "blended","healthy","fermented", "simmered", "slow cooked"],
+        "unhealthy_ingredients": ["sugar", "syrup", "chocolate", "cream", "creamy", "bacon", "margarine", "shortening", "lard", "mayonnaise", "ranch", "thousand island", "sour cream"],
+        "unhealthy_preparation": ["fried", "deep fried", "candied", "battered", "sweetened","fries", "fry", "frying", "deep fry", "deep frying", "candy", "candying", "batter", "battering", "dredge", "dredging", "dredged"]
+    }
+    vg_categories = {
+        "healthy_ingredients": ["spinach", "kale", "broccoli",
+            "beans","snap peas","green","vegetable", "beet",
+            "cauliflower",  "arugula", "mixed vegetables", "mixed green","ginger",
+            "cucumber", "tomato", "bell pepper", "carrot", "zucchini", "asparagus", "brussels sprouts","mushrooms"],
+        "healthy_preparation": ["steamed", "boiled", "baked", "grilled", "raw", "toast", "sauteed", "puree","mixed"],
+        "unhealthy_ingredients": ["sugar", "syrup", "chocolate", "cream", "creamy", "bacon", "margarine", "shortening", "lard", "mayonnaise", "ranch", "thousand island", "sour cream"],
+        "unhealthy_preparation": ["fried", "deep fried", "candied", "battered", "sweetened","fries", "fry", "frying", "deep fry", "deep frying", "candy", "candying", "batter", "battering", "dredge", "dredging", "dredged"]
+    } 
+    main_categories = {
+        "healthy_ingredients": [],
+        "healthy_preparation": ["steamed", "boiled", "baked", "grilled", "roasted", "raw", "toast", "sauteed", "puree","mixed", "blended","healthy","fermented", "simmered", "slow cooked"],
+        "unhealthy_ingredients": ["sugar", "syrup", "chocolate", "cream", "creamy", "bacon", "margarine", "shortening", "lard", "mayonnaise", "ranch", "thousand island", "sour cream"],
+        "unhealthy_preparation": ["fried", "deep fried", "candied", "battered", "sweetened","fries", "fry", "frying", "deep fry", "deep frying", "candy", "candying", "batter", "battering", "dredge", "dredging", "dredged"]
+    } 
+    # Get keywords dict
+    keywords = {
+        'bf': bf_categories,
+        'wg_side': wg_categories,
+        'vg_side': vg_categories,
+        'main': main_categories
+    }.get(meal_type, bf_categories)
+
+    return keywords
