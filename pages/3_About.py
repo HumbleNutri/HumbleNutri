@@ -125,7 +125,7 @@ st.text("")
 
 st.markdown(
     """
-        ##### 👉️ Check out [the GitHub repo](https://github.com/HumbleNutri/HumbleNutri)
+        ##### 👉️ Check out [the GitHub repo](https://anonymous.4open.science/r/HN_CIKM/)
     """
 )
 
